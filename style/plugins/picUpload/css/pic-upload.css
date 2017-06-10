@@ -1,0 +1,145 @@
+/* jquery.Jcrop.min.css v0.9.12 (build:20130126) */
+.jcrop-holder{direction:ltr;text-align:left;}
+.jcrop-vline,.jcrop-hline{background:#FFF;font-size:0;position:absolute;}
+.jcrop-vline{height:100%;width:1px!important;}
+.jcrop-vline.right{right:0;}
+.jcrop-hline{height:1px!important;width:100%;}
+.jcrop-hline.bottom{bottom:0;}
+.jcrop-tracker{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;height:100%;width:100%;}
+.jcrop-handle{background-color:#333;border:1px #EEE solid;font-size:1px;height:7px;width:7px;}
+.jcrop-handle.ord-n{left:50%;margin-left:-4px;margin-top:-4px;top:0;}
+.jcrop-handle.ord-s{bottom:0;left:50%;margin-bottom:-4px;margin-left:-4px;}
+.jcrop-handle.ord-e{margin-right:-4px;margin-top:-4px;right:0;top:50%;}
+.jcrop-handle.ord-w{left:0;margin-left:-4px;margin-top:-4px;top:50%;}
+.jcrop-handle.ord-nw{left:0;margin-left:-4px;margin-top:-4px;top:0;}
+.jcrop-handle.ord-ne{margin-right:-4px;margin-top:-4px;right:0;top:0;}
+.jcrop-handle.ord-se{bottom:0;margin-bottom:-4px;margin-right:-4px;right:0;}
+.jcrop-handle.ord-sw{bottom:0;left:0;margin-bottom:-4px;margin-left:-4px;}
+.jcrop-dragbar.ord-n,.jcrop-dragbar.ord-s{height:7px;width:100%;}
+.jcrop-dragbar.ord-e,.jcrop-dragbar.ord-w{height:100%;width:7px;}
+.jcrop-dragbar.ord-n{margin-top:-4px;}
+.jcrop-dragbar.ord-s{bottom:0;margin-bottom:-4px;}
+.jcrop-dragbar.ord-e{margin-right:-4px;right:0;}
+.jcrop-dragbar.ord-w{margin-left:-4px;}
+.jcrop-light .jcrop-vline,.jcrop-light .jcrop-hline{background:#FFF;filter:alpha(opacity=70)!important;opacity:.70!important;}
+.jcrop-light .jcrop-handle{-moz-border-radius:3px;-webkit-border-radius:3px;background-color:#000;border-color:#FFF;border-radius:3px;}
+.jcrop-dark .jcrop-vline,.jcrop-dark .jcrop-hline{background:#000;filter:alpha(opacity=70)!important;opacity:.7!important;}
+.jcrop-dark .jcrop-handle{-moz-border-radius:3px;-webkit-border-radius:3px;background-color:#FFF;border-color:#000;border-radius:3px;}
+.solid-line .jcrop-vline,.solid-line .jcrop-hline{background:#FFF;}
+.jcrop-holder img,img.jcrop-preview{max-width:none;}
+/*弹层*/
+#pic_layer{
+  display:none;
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  font-family:"微软雅黑";
+  z-index:9999;
+}
+.layer_box {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-top:-235px;
+  margin-left:-375px;
+  width:750px;
+  height:470px;
+  padding:10px;
+  background:#FFFFFF;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;;
+}
+/*上传提示*/
+#tit_layer{
+  position:absolute;
+  right:-100px;
+  top:0;
+  display:none;
+   font-family:"微软雅黑";
+}
+/*进度条样式*/
+#son{
+  background: -moz-linear-gradient( left,#5ac8fa,#0192db);
+  background: -webkit-linear-gradient(left,#5ac8fa,#0192db);
+  background: -o-linear-gradient(left,#5ac8fa,#0192db0);
+  background: -linear-gradient( left,#5ac8fa,#0192db);
+}
+/*进度条盒子样式*/
+#son_box{
+  position: absolute;
+  bottom: 110px;
+  left: 45px;
+  width: 600px;
+  height: 16px;
+  border-radius: 10px;
+  background-color: #ccc;
+  font-family: "微软雅黑";
+}
+/*保存按钮样式*/
+#saveBtn{
+  position: absolute;
+  bottom: 30px;
+  left: 274px;
+  width: 112px;
+  height: 42px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 42px;
+  color: #fff;
+  background-color: #3bb0e0;
+  font-family: "微软雅黑";
+}
+.oThinker {
+  position:relative;
+  display:inline-block;
+  width:160px;
+  height:160px;
+  background:rgba(255,255,255,.7);
+}
+#pic_crop_box::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 280px;
+  background: #a0a0a0;
+  left: 482px;
+  top: 51px;
+}
+.layer_close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 26px;
+  color:#5AC8FA;
+  font-weight:600;
+}
+#show_box {
+  position:absolute;
+  left:40px;
+  top:45px;
+  z-index:999;
+  width:70px;
+  height:70px;
+  cursor:pointer;
+}
+#show_box .icon-add {
+  font-size:70px;
+}
+#show_crop_pic {
+  width:160px;
+  height:160px;
+  position:absolute;
+  z-index:99;
+}
+.show_hint {
+  width: 80px;
+  height: 34px;
+  position: absolute;
+  right: 174px;
+  top: 56px;
+  color: #3e3e3e;
+}
+
+
