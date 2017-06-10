@@ -7,13 +7,13 @@
     <!--#include virtual="/User/head.html" -->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper" id="vue-projetc_view-content">
 
         <!--#include virtual="/User/menu_left.html" -->
 
         <div class="content-wrapper">
             <section class="content-header">
-                <h1>项目名称<small>0</small></h1>
+                <h1>{{info.projectName}}<small>0</small></h1>
             </section>
             <section class="content">
 
@@ -98,7 +98,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">项目名称：</label>
                                     <p class="col-sm-10 control-label" style="text-align: left">
-                                        项目名称
+                                        {{info.projectName}}
                                         <a href="project_view.aspx?id=0">
                                             <button type="button" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
                                         </a>
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">项目状态：</label>
-                                    <p class="col-sm-10 control-label" style="text-align: left">状态</p>
+                                    <p class="col-sm-10 control-label" style="text-align: left">{{info.statusView}}</p>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">公司名称：</label>
@@ -135,7 +135,7 @@
                     <div class="col-md-4">
                         <div class="info-box bg-yellow">
 
-                            <span class="info-box-icon"><i class="fa fa-image"></i></span>
+                            <span class="info-box-icon"><i class="fa fa-image">{{info.asdf}}</i></span>
                             <div class="info-box-content">
                                 <a href="project_image_list.aspx?id=0">
                                     <h4>全景图片管理</h4>
@@ -173,6 +173,10 @@
             ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, id: $.getUrlParam("id"), user: 1 });
             function fun_list(result) {
 
+              var vm = new Vue({
+                el:"#vue-projetc_view-content",
+                data:result.data
+              });
             }
 
             function fun_load(data) {
