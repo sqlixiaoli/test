@@ -16,16 +16,16 @@
             <section class="content-header">
                 <h1>我的项目<small>0</small></h1>
             </section>
-            <section class="content">
+            <section class="content" id="vue-content">
                 <div class="row">
 
 
-                    <div class="col-md-4">
+                    <div class="col-md-4" v-for="item in list.data">
                         <div class="box box-widget widget-user">
                             <!-- Add the bg color to the header using any of the bg-* classes -->
-                            <a href="project_view.aspx?id=0">
+                            <a :href="'project_view.aspx?id='+item.id">
                                 <div class="widget-user-header bg-black" style="background: url('/style/dist/img/photo1.png') center center; height: 200px; cursor: pointer">
-                                    <h3 class="widget-user-username">项目名称</h3>
+                                    <h3 class="widget-user-username">{{item.projectName}}</h3>
                                     <h5 class="widget-user-desc">项目状态</h5>
                                 </div>
                             </a>
@@ -77,8 +77,17 @@
         </div>
 
         <script>
-            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, page: 1, status: $.getUrlParam("status"), user: 1 });
-            function fun_list(data) {
+            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status"), user: 1 });
+            function fun_list(result) {
+              var vm = new Vue({
+                el:"#vue-content",
+                data:result.data,
+                computed:{
+                  statusView:function(){
+
+                  }
+                }
+              });
                 //$("#userName").html(data.USER.mPhone);
                 //$("#userTitle").html(data.USER.mPhone);
 

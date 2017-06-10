@@ -169,6 +169,17 @@
                 </div>
             </section>
         </div>
+<script>
+            ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, id: $.getUrlParam("id"), user: 1 });
+            function fun_list(result) {
+
+            }
+
+            function fun_load(data) {
+                //alert("开始加载");
+            }
+
+        </script>
 
          <!--#include virtual="/User/menu_button.html" -->
     </div>
