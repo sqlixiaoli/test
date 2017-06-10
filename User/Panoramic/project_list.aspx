@@ -26,7 +26,7 @@
                             <a :href="'project_view.aspx?id='+item.id">
                                 <div class="widget-user-header bg-black" style="background: url('/style/dist/img/photo1.png') center center; height: 200px; cursor: pointer">
                                     <h3 class="widget-user-username">{{item.projectName}}</h3>
-                                    <h5 class="widget-user-desc">项目状态</h5>
+                                    <h5 class="widget-user-desc"><span :class="'.project_statusView_'+item.statusView">{{item.statusView}}</span></h5>
                                 </div>
                             </a>
                             <div class="box-footer">
@@ -81,19 +81,8 @@
             function fun_list(result) {
               var vm = new Vue({
                 el:"#vue-content",
-                data:result.data,
-                computed:{
-                  statusView:function(){
-
-                  }
-                }
-              });
-                //$("#userName").html(data.USER.mPhone);
-                //$("#userTitle").html(data.USER.mPhone);
-
-                $.each(data.data.list.data, function (i, obj) {
-                  //  alert(obj.projectName);
-                });
+                data:result.data
+              });  
             }
 
             function fun_load(data) {

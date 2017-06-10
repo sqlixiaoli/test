@@ -46,6 +46,9 @@ function ajax_user(_a, postdata) {
             }
 
             var data = JSON.parse(d);
+
+            init(data);
+
             if (data.Login == 1) {
                 location.href = "/User/login.html";
             }
@@ -67,4 +70,12 @@ function ajax_user(_a, postdata) {
             alert("err");
         }
     });
+}
+
+function init(data)
+{
+    if (data.USER.id != null) {
+        if ($("#userName") != null) $("#userName").html(data.USER.mPhone);
+        if ($("#userPhone") != null) $("#userPhone").html(data.USER.mPhone);
+    }
 }
