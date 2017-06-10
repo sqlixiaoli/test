@@ -41,7 +41,7 @@ function ajax_user(_a, postdata) {
             }
             else {
                 if (postdata.showdata != null) {
-                    if (postdata.showdata > 0) document.write(d);
+                    if (postdata.showdata > 0) alert(d);
                 }
             }
 

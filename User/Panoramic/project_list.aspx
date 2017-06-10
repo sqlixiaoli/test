@@ -77,18 +77,18 @@
         </div>
 
         <script>
-            ajax_user("project_get_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status"), user: 1 });
+            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, page: 1, status: $.getUrlParam("status"), user: 1 });
             function fun_list(data) {
-                $("#userName").html(data.USER.mPhone);
-                $("#userTitle").html(data.USER.mPhone);
+                //$("#userName").html(data.USER.mPhone);
+                //$("#userTitle").html(data.USER.mPhone);
 
                 $.each(data.data.list.data, function (i, obj) {
-                    alert(obj.projectName);
+                  //  alert(obj.projectName);
                 });
             }
 
             function fun_load(data) {
-                alert("开始加载");
+                //alert("开始加载");
             }
 
         </script>
