@@ -100,37 +100,37 @@
       }
     }
     if(json.model){
-      $(".alerts").hide();
-      $(".confirm").show();
+      $("#mymodal-data .alerts").hide();
+      $("#mymodal-data .confirm").show();
     }else{
-      $(".confirm").hide();
-      $(".alerts").show();
+      $("#mymodal-data .confirm").hide();
+      $("#mymodal-data .alerts").show();
     }
     
-    $(".modal-body p").html(text);
+    $("#mymodal-data .modal-body p").html(text);
     $("#mymodal-data").modal({
       backdrop:"static"
     }).one('shown.bs.modal', function(e){
       $("#mymodal-data").data("id", "");
-      if($("#_btn_ok:not(:hidden)").length){
-        $("#_btn_ok").focus().on("keydown", function(event){
+      if($("#mymodal-data #_btn_ok:not(:hidden)").length){
+        $("#mymodal-data #_btn_ok").focus().on("keydown", function(event){
           if(event.keyCode == 13){
-            dispatch($(this)[0], "click");
+            $(this).click();
           }
         });
-      }else if($("#_btn_yes:not(:hidden)").length){
-        $("#_btn_yes").on("keydown", function(event){
+      }else if($("#mymodal-data #_btn_yes:not(:hidden)").length){
+        $("#mymodal-data #_btn_yes").on("keydown", function(event){
           if(event.keyCode == 13){
-            dispatch($(this)[0], "click");
+            $(this).click();
           }else if(event.keyCode == 37 || event.keyCode == 39){
-            $("#_btn_no").focus();
+            $("#mymodal-data #_btn_no").focus();
           }
         });
-        $("#_btn_no").on("keydown", function(event){
+        $("#mymodal-data #_btn_no").on("keydown", function(event){
           if(event.keyCode == 13){
-            dispatch($(this)[0], "click");
+            $(this).click();
           }else if(event.keyCode == 37 || event.keyCode == 39){
-            $("#_btn_yes").focus();
+            $("#mymodal-data #_btn_yes").focus();
           }
         });
       }

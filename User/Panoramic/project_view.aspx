@@ -100,7 +100,7 @@
                                     <p class="col-sm-10 control-label" style="text-align: left">
                                         <a :href="'/PAN/index.aspx?id='+info.id" target="_blank">{{info.projectName}}</a>
                        
-                                            <button type="button" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
+                                            <button type="button" @click="editProjectName(info.projectName)" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
                                     
                                     </p>
                                 </div>
@@ -175,7 +175,12 @@
 
               var vm = new Vue({
                 el:"#vue-projetc_view-content",
-                data:result.data
+                data:result.data,
+                methods:{
+                  editProjectName:function(projetcName){
+                    editBox("项目名称","input",function(data){alert(data)},projetcName);
+                  }
+                }
               });
             }
 
