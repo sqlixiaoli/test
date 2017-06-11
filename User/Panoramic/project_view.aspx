@@ -135,9 +135,9 @@
                     <div class="col-md-4">
                         <div class="info-box bg-yellow">
 
-                            <span class="info-box-icon"><i class="fa fa-image">{{info.asdf}}</i></span>
+                            <span class="info-box-icon"><i class="fa fa-image"></i></span>
                             <div class="info-box-content">
-                                <a href="project_image_list.aspx?id=0">
+                                <a :href="'project_image_list.aspx?projectid='+info.id">
                                     <h4>全景图片管理</h4>
                                     <span class="info-box-number">1<small>P</small></span>
                                 </a>
@@ -170,7 +170,7 @@
             </section>
         </div>
         <script>
-            ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, id: $.getUrlParam("id"), user: 1 });
+            ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), user: 1 });
             function fun_list(result) {
 
               var vm = new Vue({

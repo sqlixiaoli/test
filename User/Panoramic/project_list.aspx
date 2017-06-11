@@ -7,9 +7,12 @@
     <!--#include virtual="/User/head.html" -->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+   
     <div class="wrapper">
 
         <!--#include virtual="/User/menu_left.html" -->
+
+        
 
          <div class="content-wrapper">
 
@@ -17,8 +20,8 @@
                 <h1>我的项目<small>0</small></h1>
             </section>
             <section class="content" id="vue-content">
-                <div class="row">
-
+                                
+                <div class="row">                     
 
                     <div class="col-md-4" v-for="item in list.data">
                         <div class="box box-widget widget-user">

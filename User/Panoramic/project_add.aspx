@@ -26,17 +26,20 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body form-horizontal">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">项目名称</label>
-                                    <div class="col-sm-6">
-                                        <input name="projectName" class="form-control" placeholder="请输入项目名称 ..." type="text">
+
+                                <form action="project_add" method="post">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">项目名称</label>
+                                        <div class="col-sm-6">
+                                            <input name="projectName" class="form-control" placeholder="请输入项目名称 ..." type="text">
+                                        </div>
+                                        <span class="help-block col-sm-4">*项目名称长度不能超过15个字符</span>
                                     </div>
-                                    <span class="help-block col-sm-4">*项目名称长度不能超过15个字符</span>
-                                </div>
-                                <div class="box-footer">
-                                   
-                                </div>
+                                    <div class="box-footer">
+                                    </div>
+                                </form>
+
                             </div>
                             <!-- /.box-body -->
                         </div>

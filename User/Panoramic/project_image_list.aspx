@@ -14,8 +14,8 @@
         <div class="content-wrapper">
 
 
-            <section class="content-header">
-                <h1>项目名称<small>图片管理</small></h1>
+            <section class="content-header" id="vue-project-info">
+                <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}<small></a> > 图片管理</small></h1>
             </section>
             <section class="content">
 
@@ -27,11 +27,12 @@
                                 <h3 class="box-title">默认分组</h3>
                             </div>
                             <!-- /.box-header -->
-                            <div class="box-body form-horizontal">
+                            <div class="box-body form-horizontal" id="vue-project-image-list">
+
                                 <div class="col-md-3">
-                                    <div class="box box-widget widget-user">
+                                    <div class="box box-widget widget-user" id="vue-project-info1">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                                        <a href="project_view.aspx?id=0">
+                                        <a :href="'project_image_add.aspx?projectid='+project.id">
                                             <div class="widget-user-header bg-black" style="background: url('') center center; height: 200px; cursor: pointer">
                                                 <h3 class="widget-user-username">添加一个新场景</h3>
                                             </div>
@@ -39,17 +40,17 @@
                                     </div>
                                 </div>
 
-                                        <div class="col-md-3">
-                                            <div class="box box-widget widget-user">
-                                                <!-- Add the bg color to the header using any of the bg-* classes -->
-                                                <a href="project_view.aspx?id=0">
-                                                    <div class="widget-user-header bg-black" style="background: url('') center center; height: 200px; cursor: pointer">
-                                                        <h3 class="widget-user-username">图片标题</h3>
-                                                        <h5 class="widget-user-desc">状态</h5>
-                                                    </div>
-                                                </a>
+                                <div class="col-md-3" v-for="item in list.data">
+                                    <div class="box box-widget widget-user">
+                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                                        <a href="project_view.aspx?id=0">
+                                            <div class="widget-user-header bg-black" style="background: url('') center center; height: 200px; cursor: pointer">
+                                                <h3 class="widget-user-username">{{item.imgTitle}}</h3>
+                                                <h5 class="widget-user-desc">状态</h5>
                                             </div>
-                                        </div>
+                                        </a>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -94,6 +95,35 @@
         </div>
 
         <!--#include virtual="/User/menu_button.html" -->
+
+        <script>
+
+            ajax_user("project_image_list", { callback: 'fun_project', btnfun: 'fun_load', showdata: 0, projectid: $.getUrlParam("projectid") });
+
+            function fun_project(result) {
+
+                var vm = new Vue({
+                    el: "#vue-project-info",
+                    data: result.data
+                });
+
+                var vm = new Vue({
+                    el: "#vue-project-info1",
+                    data: result.data
+                });
+
+                var vm = new Vue({
+                    el: "#vue-project-image-list",
+                    data: result.data
+                });
+
+            }
+
+            function fun_load(data) {
+                //alert("开始加载");
+            }
+
+        </script>
 
     </div>
 </body>

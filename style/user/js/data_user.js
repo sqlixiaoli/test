@@ -11,7 +11,7 @@ function ajax_user(_a, postdata) {
         //提交数据的类型 POST GET
         type: "POST",
         //提交的网址
-        url: "/API/User/?a=" + _a + "&t=" + new Date().getTime(),
+        url: "/API/User/?a=" + _a + "&user=1&t=" + new Date().getTime(),
         //提交的数据
         data: postdata,
         //返回数据的格式
@@ -35,7 +35,7 @@ function ajax_user(_a, postdata) {
             if (Object.prototype.toString.call(postdata).lastIndexOf("Array") >= 0) {
                 $.each(postdata, function (i, obj) {
                     if (obj["name"] == "showdata") {
-                        if (obj["value"] > 0) document.write(d);
+                        if (obj["value"] > 0) alert(d);
                     }
                 });
             }
