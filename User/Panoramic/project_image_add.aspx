@@ -27,7 +27,8 @@
 
                             <input type="hidden" name="callback" value="fun_add" />
                             <input type="hidden" name="btnfun" value="fun_load" />
-                            <input type="hidden" name="showdata" value="1" />
+                            <input type="hidden" name="showdata" value="0" />
+                            <input type="hidden" id="projectid" name="projectid" value="0" />
 
                             <div class="box box-warning  with-border">
                                 <div class="box-header">
@@ -60,7 +61,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">所属分组</label>
                                         <div class="col-sm-6">
-                                            <select class="form-control" name="groupId">
+                                            <select class="form-control" name="group">
                                                 <option value="0">默认分组</option>
                                             </select>
                                         </div>
@@ -72,7 +73,7 @@
                                         <div class="col-sm-6">
                                         <label type="button" for="fileupload" class="btn btn-primary">上传图片</label>
                                         <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename">
-                                        <input id="filepath" type="text">
+                                        <input id="filepath" name="imgfile" type="text">
                                         </div>
                                         <span class="help-block col-sm-4"></span>
                                     </div>
@@ -97,6 +98,9 @@
             ajax_user("project_get", { callback: 'fun_project', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("projectid") });
 
             function fun_project(result) {
+
+                $("#projectid").val($.getUrlParam("projectid"));
+
                 var vm = new Vue({
                     el: "#vue-project-info",
                     data: result.data
@@ -108,7 +112,9 @@
             }
 
             function fun_add(result)
-            { }
+            {
+                location.href = "project_image_list.aspx?projectid=" + $.getUrlParam("projectid");
+            }
 
              $('#fileupload').fileupload({
                  autoUpload: true,

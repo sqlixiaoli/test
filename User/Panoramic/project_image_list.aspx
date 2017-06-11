@@ -43,7 +43,7 @@
                                 <div class="col-md-3" v-for="item in list.data">
                                     <div class="box box-widget widget-user">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
-                                        <a href="project_view.aspx?id=0">
+                                       <a :href="'project_image_view.aspx?id='+item.id">
                                             <div class="widget-user-header bg-black" style="background: url('') center center; height: 200px; cursor: pointer">
                                                 <h3 class="widget-user-username">{{item.imgTitle}}</h3>
                                                 <h5 class="widget-user-desc">状态</h5>
@@ -98,7 +98,7 @@
 
         <script>
 
-            ajax_user("project_image_list", { callback: 'fun_project', btnfun: 'fun_load', showdata: 0, projectid: $.getUrlParam("projectid") });
+            ajax_user("project_image_list", { callback: 'fun_project', btnfun: 'fun_load', showdata:0, projectid: $.getUrlParam("projectid") });
 
             function fun_project(result) {
 
