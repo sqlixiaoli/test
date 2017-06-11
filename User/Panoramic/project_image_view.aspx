@@ -15,7 +15,7 @@
 
 
             <section class="content-header" id="vue-project-info">
-                <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}</a>  > <a :href="'project_image_list.aspx?projectid='+info.id">场景管理</a> <small> > {{info.imgTitle}}</small></h1>
+                <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}</a>  > <a :href="'project_image_list.aspx?projectid='+project.id">场景管理</a> <small> > {{info.imgTitle}}</small></h1>
             </section>
             <section class="content">
 
@@ -42,13 +42,17 @@
             </div>
                               <div class="box-body pad table-responsive">
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>                                
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
 
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">添加场景跳转</button>
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">Primary</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">Primary</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">Primary</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">Primary</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">添加热点链接</button>
+
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">管理场景跳转</button>
+
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">管理热点链接</button>
+
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">设置背景音乐</button>
 
                               </div>
 

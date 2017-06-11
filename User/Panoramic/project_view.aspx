@@ -98,10 +98,10 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">项目名称：</label>
                                     <p class="col-sm-10 control-label" style="text-align: left">
-                                        {{info.projectName}}
-                                        <a href="project_view.aspx?id=0">
+                                        <a :href="'/PAN/index.aspx?id='+info.id" target="_blank">{{info.projectName}}</a>
+                       
                                             <button type="button" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
-                                        </a>
+                                    
                                     </p>
                                 </div>
                                 <div class="form-group">
