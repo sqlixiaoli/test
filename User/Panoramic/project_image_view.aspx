@@ -46,9 +46,12 @@
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_add_hotspot()">添加场景跳转</button>
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">添加热点链接</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(true)">+</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(false)">-</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_add()">保存数据</button>
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">管理场景跳转</button>
+
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_delete()">管理场景跳转</button>
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg">管理热点链接</button>
 
@@ -61,8 +64,8 @@
                                   <input type="input" id="scene_v" value="0" />
                                   <input type="input" id="scene_f" value="0" />
                                   <input type="input" id="hotspot_name" value="" />
-                                  <input type="input" id="hotspot_h" value="" />
-                                  <input type="input" id="hotspot_v" value="" />
+                                  <input type="input" id="hotspot_title" value="" />
+                                  <input type="input" id="hotspot_toscenename" value="" />
                              </div>
 
                              </div>
@@ -73,6 +76,8 @@
         </div>
 
         <!--#include virtual="/User/menu_button.html" -->
+
+        <script src="/style/user/js/pro_edit_scene.js"></script>
 
         <script>
 
@@ -104,29 +109,81 @@
             {
                 alert("设置成功！");
             }
+
             function pan_scene_now_address(h, v, f) {
                 $("#scene_h").val(h);
                 $("#scene_v").val(v);
                 $("#scene_f").val(f);
             }
 
-            function pan_scene_add_hotspot()
-            {
+            function pan_scene_add_hotspot() {
                 var panobj = document.getElementById("panobj");
-                var _name = "a1";
-                var _title = "新锚点";
-
-                panobj.contentWindow.getkp().call("add_hotspot('" + _name + "', '" + $("#scene_h").val() + "','" + $("#scene_v").val() + "', '" + _title + "')");
-
-                pan_scene_hotspot_status(_name, $("#scene_h").val(), $("#scene_v").val());
-                //panobj.contentWindow.js_scene_add_hotspot(_name, $("#scene_h").val(), $("#scene_v").val(), "新锚点");
-            }
-            function pan_scene_hotspot_status(_name, h, v,obj)
-            {
+                var _name = "hotspot_" + Math.uuid(18, 16);
+                var _title = "1";
+                kp.hotspot.add(_name, "/File/icon/vtourskin_hotspot.png", $("#scene_h").val(), $("#scene_v").val(), _title);
                 $("#hotspot_name").val(_name);
-                $("#hotspot_h").val(h);
-                $("#hotspot_v").val(v);
+                $("#hotspot_title").val(_title);
             }
+
+            function pan_scene_hotspot_scale(isadd) {
+                var name = $("#hotspot_name").val();
+                if (isadd) {
+                    kp.hotspot.scale(name, kp.hotspot.scale(name)+0.1);
+                }
+                else { kp.hotspot.scale(name, kp.hotspot.scale(name) - 0.1); }
+            }
+
+            function pan_scene_hotspot_add() {
+                var name = $("#hotspot_name").val();
+
+                ajax_user("pan_hotspot_add", {
+                    callback: 'fun_hotspot_add',
+                    showdata: 1,
+                    imageId: $.getUrlParam("id"),
+                    hotspotName: name,
+                    hotspotType:0,
+                    hotspotKee: 0,
+                    imgUrl: kp.hotspot.url(name),
+                    hotspotAth: kp.hotspot.ath(name),
+                    hotspotAtv: kp.hotspot.atv(name),
+                    hotspotScale: kp.hotspot.scale(name),
+                    hotspotTitle: $("#hotspot_title").val(),
+                    hotspotTitleView: 1,
+                    hotspotData: "",
+                    hotspotRotate: kp.hotspot.rotate(name)
+                });
+            }
+            function fun_hotspot_add(result) {
+                //alert("设置成功！");
+            }
+
+
+
+            function pan_scene_hotspot_status(_name, h, v, _scale, _rotate, _url) {
+                
+            }
+
+            function pan_scene_hotspot_status1()
+            {
+                //var name = $("#hotspot_name").val();
+                //$("#hotspot_h").val(pan_hotspot_get_val(name, "ath"));            
+            }
+
+            function pan_scene_hotspot_delete()
+            {
+               // var name = $("#hotspot_name").val();
+               //// kp.hotspot.visible(name, false);
+               // alert(kp.hotspot.ath(name));
+               // alert(kp.hotspot.ath(name));
+            }
+
+            //function pan_hotspot_get_val(_name,ac)
+            //{
+            //    return panobj.contentWindow.getkp().get("hotspot['" + _name + "']." + ac);
+            //}
+            //function pan_hotspot_get_set(_name, ac,val) {
+            //    panobj.contentWindow.getkp().set("hotspot['" + _name + "']." + ac,val);
+            //}
         </script>
 
     </div>
