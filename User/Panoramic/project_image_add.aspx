@@ -28,7 +28,8 @@
                             <input type="hidden" name="callback" value="fun_add" />
                             <input type="hidden" name="btnfun" value="fun_load" />
                             <input type="hidden" name="showdata" value="0" />
-                            <input type="hidden" id="projectid" name="projectid" value="0" />
+                            <input type="hidden" name="imgtype" value="0" />
+                            <input type="hidden" id="projectid" name="projectid" value="0" />   
 
                             <div class="box box-warning  with-border">
                                 <div class="box-header">
@@ -46,7 +47,7 @@
                                     </div>
 
 
-                                    <div class="form-group">
+                                    <div class="form-group" style="display:none">
                                         <label class="col-sm-1 control-label">场景类型</label>
                                         <div class="col-sm-6">
                                             <select class="form-control" name="imgtype">

@@ -44,7 +44,7 @@
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_add_hotspot()">添加场景跳转</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#myModal_hotspot_scene_add">添加场景跳转</button>
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(true)">+</button>
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(false)">-</button>
@@ -73,6 +73,9 @@
                     </div>
                 </div>
             </section>
+
+            <!--#include virtual="project_image_hotspot_scene_add.html" -->
+
         </div>
 
         <!--#include virtual="/User/menu_button.html" -->
@@ -186,6 +189,8 @@
             //}
         </script>
 
+
+        
     </div>
 </body>
 </html>
