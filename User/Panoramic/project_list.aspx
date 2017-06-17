@@ -80,7 +80,7 @@
         </div>
 
         <script>
-            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status"), user: 1 });
+            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status")});
             function fun_list(result) {
               var vm = new Vue({
                 el:"#vue-content",
