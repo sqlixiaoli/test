@@ -26,7 +26,8 @@
                     <!-- todo 列表页 pan_page_list 仅显示标题和更新时间，其它可以不显示 ，后面做个编辑按钮，DIV，pan_page_edit  -->
                     <!-- todo 还需要有一个添加按钮，添加弹出DIV pan_page_add  -->
                     <a href="page_view.aspx?pageId=0">网页内容页</a>
-                    <button type="button" class="btn btn-primary col-md-offset-10 col-sm-offset-0 col-xs-offset-0">添加</button>
+                    <button type="button" class="btn btn-primary col-md-offset-10 col-sm-offset-0 col-xs-offset-0"
+                    onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加</button>
                     <div class="box">
                          <div class="box-body">
                          <table class="table table-bordered">
@@ -93,6 +94,10 @@
             function fun_load(data) {
                // alert("开始加载");
                 vm.loading = true;
+            }
+            function page_addend(result)
+            {
+               alert("添加完成！");
             }
         </script>
 
