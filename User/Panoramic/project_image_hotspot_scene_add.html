@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">热点图标</label>
-                    <img onclick="tool_icon_select('call_icon_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_add_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
+                    <img onclick="tool_icon_select('call_icon_hotspot_add_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_add_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
                     <input type="hidden" id="hotspot_add_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
                     <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
                     <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
@@ -115,9 +115,11 @@
     }
 
 
-    function call_icon_select(result)
+    function call_icon_hotspot_add_select(result)
     {
-
+        $('#hotspot_add_imgUrl').val(result.src);
+        $('#hotspot_add_imgUrl_show').attr("src", result.src);
+        kp.hotspot.url($("#hotspot_name").val(), result.src);
     }
 
 </script>

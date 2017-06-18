@@ -1,1 +1,29 @@
-﻿
+﻿<div id="icon_select_box">
+
+    <div class="icon_select_item" v-for="item in list.data">
+        <img :src="item.icoImg" onclick="fun_icon_select_item(this)" />
+        <p class="widget-user-desc">{{item.icoTitle}}</p>
+    </div>
+
+
+    <div style="clear:both"></div>
+</div>
+
+<script>
+    ajax_user("icon_list", { callback: 'fun_icon_select_list', showdata: 0 });
+    function fun_icon_select_list(result) {
+        var vm = new Vue({
+            el: "#icon_select_box",
+            data: result.data
+        });
+    }
+
+    function fun_icon_select_item(_img)
+    {
+        var _data = new Object();
+        _data = { src: $(_img).attr("src")};
+        modal_hide();
+        setTimeout(function () { var a = eval(modal_url_pra("call")); a(_data); }, 10);
+    }
+
+</script>

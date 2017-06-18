@@ -90,8 +90,6 @@
 
             function fun_load(data) {
                 //alert("开始加载");
-
-                modal_def("添加网页", "/user/resources/page_add.html?call=fun_page_add");
             }
 
         </script>
