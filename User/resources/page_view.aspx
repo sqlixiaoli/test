@@ -28,11 +28,21 @@
                     <!-- 有个删除按钮，可以删除内容的一部分 pan_page_info_del  -->
                     <!-- 拖动内容时可以排序 pan_page_info_order  -->
 
+                    <!-- 随便添加测试 -->
+                    <button type="button" class="btn btn-primary" onclick="modal_def('添加网页','page_add.html?call=page_addend')">添另网页测试</button>
+
                 </div>
             </section>
         </div>
 
         <script>
+
+
+            function page_addend(result)
+            {
+                alert("添加完成！");
+            }
+
             ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, pageId: $.getUrlParam("pageId") });
             function fun_list(result) {
               //var vm = new Vue({
