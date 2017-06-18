@@ -1,3 +1,22 @@
 .tpl_item {
-    display:none;
+    display: none;
+}
+
+.icon_select_item {   
+    width: 90px;
+    height: 110px;
+    margin: 10px;
+    border: 1px #ebebeb solid;
+    padding: 1px;
+    cursor: pointer;
+    float:left;
+}
+
+.icon_select_item img{
+     width: 80px;
+    height: 80px;
+}
+.icon_select_item p{
+    margin-top:5px;
+    text-align:center;
 }
