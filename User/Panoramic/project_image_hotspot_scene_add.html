@@ -1,57 +1,123 @@
-﻿<!-- Modal -->
-<div class="modal fade" id="myModal_hotspot_scene_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">添加场景跳转</h4>
-            </div>
-            <div class="modal-body">
-
-
-                <form action="project_image_add" method="post"  class="form-horizontal">
-
-                    <input type="hidden" name="callback" value="fun_add" />
-                    <input type="hidden" name="btnfun" value="fun_load" />
-                    <input type="hidden" name="showdata" value="0" />
-                    <input type="hidden" name="imgtype" value="0" />
-                    <input type="hidden" id="projectid" name="projectid" value="0" />
-
-                    <div class="box-body">
-                        <!-- text input -->
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">选择场景</label>
-                            <div class="col-sm-6">
-                                <input name="title" class="form-control" placeholder="请输入热点名称 ..." type="text">
-                            </div>
-                            <span class="help-block col-sm-4">*称长度不能超过15个字符</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">热点名称</label>
-                            <div class="col-sm-6">
-                                <input name="title" class="form-control" placeholder="请输入热点名称 ..." type="text">
-                            </div>
-                            <span class="help-block col-sm-4">*称长度不能超过15个字符</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">是否显示</label>
-                            <div class="col-sm-6">
-                                <input name="title" class="form-control" placeholder="请输入热点名称 ..." type="text">
-                            </div>
-                            <span class="help-block col-sm-4">*称长度不能超过15个字符</span>
-                        </div>
-
-                    </div>
-
-                </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">保存</button>
-            </div>
-        </div>
+﻿<div class="box box-primary" id="op_scene_add" style="display:none">
+    <div class="box-header">
+        <i class="fa fa-edit"></i>
+        <h3 class="box-title">添加场景</h3>
     </div>
+
+        <form role="form"  action="pan_hotspot_add" method="post">
+
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label>选择分组</label>
+                    <select class="form-control" id="hotspot_add_image_group">
+                        <option value="0">默认分组</option>
+                        <option v-for="item in list.data" :value="item.id">{{item.groupName}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>选择场景</label>
+                    <select class="form-control" id="hotspot_add_image" onchange="on_hotspot_add_image_chang()">
+                        <option v-for="item in list.data" :value="'scene_'+item.uuid">{{item.imgTitle}}</option>
+                    </select>
+                </div>   
+
+                <div class="form-group">
+                    <label>热点标题</label>
+                    <input class="form-control" id="hotspot_add_title" type="text">
+                </div>   
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" checked="checked"id="hotspot_add_TitleView" onchange="on_hotspot_add_title_chang()"> 是否显示热点标题
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword1">热点图标</label>
+                    <img onclick="tool_icon_select('call_icon_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_add_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
+                    <input type="hidden" id="hotspot_add_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
+                    <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
+                    <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
+                </div> 
+
+            </div>
+            <!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="button" class="btn btn-primary" onclick="on_buadd_fun_add_hotspot()">保存</button>
+                <button type="button" class="btn btn-default pull-right" onclick="on_pan_scene_add_hotspot_cancel()">取消</button>
+            </div>
+        </form>
 </div>
+
+<script>  
+
+    function on_pan_scene_add_hotspot() {
+        on_hotspot_add_image_chang();
+        $.swithView("op_scene_add", "op_main");
+        var _name = "hotspot_" + Math.uuid(18, 16);
+        var _title =$('#hotspot_add_title').val();
+        kp.hotspot.add(_name, $("#hotspot_add_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), _title);
+        $("#hotspot_name").val(_name);
+        $("#hotspot_add_title").val(_title);     
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
+    }
+
+    function on_buadd_fun_add_hotspot()
+    {
+        var name = $("#hotspot_name").val();
+
+        ajax_user("pan_hotspot_add", {
+            callback: 'fun_hotspot_add',
+            btnfun: 'fun_load',
+            showdata: 0,
+            imageId: $.getUrlParam("id"),
+            hotspotName: name,
+            hotspotType: 0,
+            hotspotKee: 0,
+            imgUrl: kp.hotspot.url(name),
+            hotspotAth: kp.hotspot.ath(name),
+            hotspotAtv: kp.hotspot.atv(name),
+            hotspotScale: kp.hotspot.scale(name),
+            hotspotTitle: $("#hotspot_add_title").val(),
+            hotspotTitleView: $("#hotspot_add_TitleView").val(),
+            hotspotData: $("#hotspot_add_image").val(),
+            hotspotRotate: kp.hotspot.rotate(name)
+        });
+    }
+
+    function fun_hotspot_add(result) {
+        location.replace(location.href);
+    }
+    
+    function on_pan_scene_add_hotspot_cancel() {
+        $.swithView("op_main", "op_scene_add");
+        kp.hotspot.visible($("#hotspot_name").val(), false);
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+    }
+
+    $('#hotspot_add_title').on("input", function (e) { on_hotspot_add_title_chang();});
+    function on_hotspot_add_title_chang()
+    {
+        if ($('#hotspot_add_TitleView').is(':checked')) {
+            hotspot_set_title($('#hotspot_name').val(), $('#hotspot_add_title').val());
+        }
+        else {
+            hotspot_set_title($('#hotspot_name').val());
+        }
+    }
+
+    function on_hotspot_add_image_chang() {
+        $('#hotspot_add_title').val($("#hotspot_add_image").find("option:selected").text());
+        on_hotspot_add_title_chang();
+    }
+
+
+    function call_icon_select(result)
+    {
+
+    }
+
+</script>

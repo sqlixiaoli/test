@@ -15,12 +15,12 @@
 
 
             <section class="content-header" id="vue-project-info">
-                <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}</a>  > <a :href="'project_image_list.aspx?projectid='+project.id">场景管理</a> <small> > {{info.imgTitle}}</small></h1>
+                  <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}</a>  > <a :href="'project_image_list.aspx?projectid='+project.id">场景管理</a> <small> > {{info.imgTitle}}</small></h1>
             </section>
             <section class="content">
 
                 <div class="row">
-                    <div class="col-md-10" id="vue-project-info1">
+                    <div class="col-md-9" id="vue-project-info1">
                         <!-- Horizontal Form -->
                         <div class="box box-info">
                             <div class="box-header with-border">
@@ -33,8 +33,9 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
-                         <div class="box box-primary">
+                    <div class="col-md-3">
+
+                         <div class="box box-primary" id="op_main">
             <div class="box-header">
               <i class="fa fa-edit"></i>
 
@@ -44,7 +45,7 @@
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
 
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#myModal_hotspot_scene_add">添加场景跳转</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_pan_scene_add_hotspot()">添加场景跳转</button>
 
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(true)">+</button>
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(false)">-</button>
@@ -58,23 +59,27 @@
                                   <button type="button" class="btn btn-block btn-primary btn-lg">设置背景音乐</button>
 
                               </div>
+                             
+                             </div>
 
-                             <div style="display:block">
+                        <!--#include virtual="project_image_hotspot_scene_add.html" -->
+
+                        <div style="display:block">
                                  <input type="input" id="scene_h" value="0" />
                                   <input type="input" id="scene_v" value="0" />
                                   <input type="input" id="scene_f" value="0" />
                                   <input type="input" id="hotspot_name" value="" />
                                   <input type="input" id="hotspot_title" value="" />
                                   <input type="input" id="hotspot_toscenename" value="" />
-                             </div>
-
+                                  <input type="input" id="hotspot_list" value="" />
+                                  <input type="input" id="project_id" value="0" />
                              </div>
 
                     </div>
                 </div>
             </section>
 
-            <!--#include virtual="project_image_hotspot_scene_add.html" -->
+            
 
         </div>
 
@@ -84,8 +89,7 @@
 
         <script>
 
-            ajax_user("project_image_get", { callback: 'fun_info', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id") });
-
+            ajax_user("project_image_get", { callback: 'fun_info', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), hotspot:1 });
             function fun_info(result) {
 
                 var vm = new Vue({
@@ -97,19 +101,47 @@
                     el: "#vue-project-info1",
                     data: result.data
                 });
+
+                var _hotspot_list = "";
+                $.each(result.data.hotspot.data, function (i, skey) {
+                    if (_hotspot_list == "")
+                        _hotspot_list = skey.hotspotName;
+                    else
+                        _hotspot_list = _hotspot_list + "," + skey.hotspotName;
+                });
+
+                $("#hotspot_list").val(_hotspot_list);
+
+                $("#project_id").val(result.data.project.id);
+                ajax_user("pan_group_list", { callback: 'fun_list_group', btnfun: 'fun_load', showdata: 0, projectId: $("#project_id").val() });
+                ajax_user("project_image_list", { callback: 'fun_list_image', btnfun: 'fun_load', showdata: 0, projectid: $("#project_id").val() });
+            }           
+
+            function fun_list_group(result) {
+                var vm = new Vue({
+                    el: "#hotspot_add_image_group",
+                    data: result.data
+                });
             }
+
+            function fun_list_image(result) {
+                var vm = new Vue({
+                    el: "#hotspot_add_image",
+                    data: result.data
+                });
+            }
+
+
 
             function fun_load(data) {
                 //alert("开始加载");
             }
 
             //设置当前位置
-            function set_scene_now_address()
-            {
+            function set_scene_now_address() {
                 ajax_user("project_image_edit", { callback: 'fun_set_now_address', showdata: 0, id: $.getUrlParam("id"), hlookat: $("#scene_h").val(), vlookat: $("#scene_v").val(), fov: $("#scene_f").val() });
             }
-            function fun_set_now_address(result)
-            {
+            function fun_set_now_address(result) {
                 alert("设置成功！");
             }
 
@@ -131,53 +163,26 @@
             function pan_scene_hotspot_scale(isadd) {
                 var name = $("#hotspot_name").val();
                 if (isadd) {
-                    kp.hotspot.scale(name, kp.hotspot.scale(name)+0.1);
+                    kp.hotspot.scale(name, kp.hotspot.scale(name) + 0.1);
                 }
                 else { kp.hotspot.scale(name, kp.hotspot.scale(name) - 0.1); }
             }
-
-            function pan_scene_hotspot_add() {
-                var name = $("#hotspot_name").val();
-
-                ajax_user("pan_hotspot_add", {
-                    callback: 'fun_hotspot_add',
-                    showdata: 1,
-                    imageId: $.getUrlParam("id"),
-                    hotspotName: name,
-                    hotspotType:0,
-                    hotspotKee: 0,
-                    imgUrl: kp.hotspot.url(name),
-                    hotspotAth: kp.hotspot.ath(name),
-                    hotspotAtv: kp.hotspot.atv(name),
-                    hotspotScale: kp.hotspot.scale(name),
-                    hotspotTitle: $("#hotspot_title").val(),
-                    hotspotTitleView: 1,
-                    hotspotData: "",
-                    hotspotRotate: kp.hotspot.rotate(name)
-                });
-            }
-            function fun_hotspot_add(result) {
-                //alert("设置成功！");
-            }
-
-
+            
 
             function pan_scene_hotspot_status(_name, h, v, _scale, _rotate, _url) {
-                
+
             }
 
-            function pan_scene_hotspot_status1()
-            {
+            function pan_scene_hotspot_status1() {
                 //var name = $("#hotspot_name").val();
                 //$("#hotspot_h").val(pan_hotspot_get_val(name, "ath"));            
             }
 
-            function pan_scene_hotspot_delete()
-            {
-               // var name = $("#hotspot_name").val();
-               //// kp.hotspot.visible(name, false);
-               // alert(kp.hotspot.ath(name));
-               // alert(kp.hotspot.ath(name));
+            function pan_scene_hotspot_delete() {
+                // var name = $("#hotspot_name").val();
+                //// kp.hotspot.visible(name, false);
+                // alert(kp.hotspot.ath(name));
+                // alert(kp.hotspot.ath(name));
             }
 
             //function pan_hotspot_get_val(_name,ac)
@@ -187,10 +192,23 @@
             //function pan_hotspot_get_set(_name, ac,val) {
             //    panobj.contentWindow.getkp().set("hotspot['" + _name + "']." + ac,val);
             //}
+
+            //通用函数
+            function hotspot_set_title(_name, _title)
+            {
+                kp.hotspot.title(_name, _title);
+            }
+
+            function hotspot_set_scale(_name, _max) {
+                if (_max) {
+                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) + 0.1);
+                }
+                else {
+                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) - 0.1);
+                }
+            }
+
         </script>
-
-
-        
     </div>
 </body>
 </html>

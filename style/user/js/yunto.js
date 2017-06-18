@@ -10,7 +10,12 @@
     }
 })(jQuery);
 
-
+(function ($) {
+    $.swithView = function (name1, name2) {
+        document.getElementById(name1).style.display = "";
+        document.getElementById(name2).style.display = "none";
+    }
+})(jQuery);
 
 (function () {
     // Private array of chars to use
@@ -71,3 +76,4 @@
         });
     };
 })();
+
