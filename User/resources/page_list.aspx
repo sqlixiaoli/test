@@ -22,7 +22,7 @@
             <section class="content" id="vue-content">
                                 
                 <div class="row">                     
-
+                     <div class="col-md-12">
                     <!-- todo 列表页 pan_page_list 仅显示标题和更新时间，其它可以不显示 ，后面做个编辑按钮，DIV，pan_page_edit  -->
                     <!-- todo 还需要有一个添加按钮，添加弹出DIV pan_page_add  -->
                     <div class="box box-info">
@@ -65,6 +65,7 @@
                           </div>
                      </div>
                 </div>
+                </div>
 
             </section>
         </div>
@@ -96,7 +97,7 @@
                    },
                    del: function(index, item) {
                        this.deleteIndex = index;
-                       ajax_user("pan_page_del", { callback: 'fun_del', btnfun: 'fun_load', showdata: 0, id: item.id, pageType:1});
+                       ajax_user("pan_page_del", { callback: 'fun_del', btnfun: 'fun_load', showdata: 0, id: item.id, pageType: 1 });
                    },
                    edit: function(item) {
                        this.editInfo = item;
