@@ -1,7 +1,7 @@
-﻿<div class="box box-primary" id="op_scene_add" style="display:none">
+﻿<div class="box box-primary" id="op_scene_edit" style="display:none">
     <div class="box-header">
         <i class="fa fa-edit"></i>
-        <h3 class="box-title">添加场景</h3>
+        <h3 class="box-title">编辑热点</h3>
     </div>
 
         <form role="form"  action="pan_hotspot_add" method="post">
@@ -9,35 +9,20 @@
             <div class="box-body">
 
                 <div class="form-group">
-                    <label>选择分组</label>
-                    <select class="form-control" id="hotspot_add_image_group">
-                        <option value="0">默认分组</option>
-                        <option v-for="item in list.data" :value="item.id">{{item.groupName}}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>选择场景</label>
-                    <select class="form-control" id="hotspot_add_image" onchange="on_hotspot_add_image_chang()">
-                        <option v-for="item in list.data" :value="'scene_'+item.uuid">{{item.imgTitle}}</option>
-                    </select>
-                </div>   
-
-                <div class="form-group">
                     <label>热点标题</label>
-                    <input class="form-control" id="hotspot_add_title" type="text">
+                    <input class="form-control" id="hotspot_edit_title" type="text">
                 </div>   
 
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" value="1" checked="checked"id="hotspot_add_TitleView" onchange="on_hotspot_add_title_chang()"> 是否显示热点标题
+                        <input type="checkbox" value="1" checked="checked"id="hotspot_edit_TitleView" onchange="on_hotspot_edit_title_chang()"> 是否显示热点标题
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">热点图标</label>
-                    <img onclick="tool_icon_select('call_icon_hotspot_add_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_add_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
-                    <input type="hidden" id="hotspot_add_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
+                    <img onclick="tool_icon_select('call_icon_hotspot_edit_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_edit_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
+                    <input type="hidden" id="hotspot_edit_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
                     <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
                     <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
                 </div> 
@@ -46,29 +31,33 @@
             <!-- /.box-body -->
 
             <div class="box-footer">
-                <button type="button" class="btn btn-primary" onclick="on_buadd_fun_add_hotspot()">保存</button>
-                <button type="button" class="btn btn-default pull-right" onclick="on_pan_scene_add_hotspot_cancel()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="on_buadd_fun_edit_hotspot()">保存</button>
+                <button type="button" class="btn btn-default pull-right" onclick="on_pan_scene_edit_hotspot_cancel()">取消</button>
             </div>
         </form>
 </div>
 
 <script>  
 
-    function on_pan_scene_add_hotspot() {
-        on_hotspot_add_image_chang();
-        $.swithView("op_scene_add", "op_main");
-        var _name = "hotspot_" + Math.uuid(18, 16);
-        var _title =$('#hotspot_add_title').val();
-        kp.hotspot.add(_name, $("#hotspot_add_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), _title);
-        $("#hotspot_name").val(_name);
-        $("#hotspot_add_title").val(_title);     
-        kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
+    var _hotspotAth = 0;
+    var _hotspotAtv = 0;
+    
+    function on_pan_scene_edit_hotspot() {
+        $.swithView("op_scene_edit", "op_main");
+        var _name = $("#hotspot_name").val();
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
+        $("#hotspot_edit_title").val(kp.hotspot.gettitle(_name));
+        $('#hotspot_edit_imgUrl').val(kp.hotspot.url(_name));
+        $('#hotspot_edit_imgUrl_show').attr("src", kp.hotspot.url(_name));
         kp.hotspot.editonclick($("#hotspot_list").val().split(","));
         kp.hotspot.editondown($("#hotspot_list").val().split(","));
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
+        kp.hotspot.editondown([_name], "drag_hotspot");
+        _hotspotAtv = kp.hotspot.atv(_name);
+        _hotspotAth = kp.hotspot.ath(_name);
     }
 
-    function on_buadd_fun_add_hotspot()
+    function on_buadd_fun_edit_hotspot()
     {
         var name = $("#hotspot_name").val();
 
@@ -91,22 +80,23 @@
         });
     }
 
-    function fun_hotspot_add(result) {
+    function fun_hotspot_edit(result) {
         location.replace(location.href);
     }
     
-    function on_pan_scene_add_hotspot_cancel() {
-        $.swithView("op_main", "op_scene_add");
-        kp.hotspot.visible($("#hotspot_name").val(), false);
+    function on_pan_scene_edit_hotspot_cancel() {
+        var _name = $("#hotspot_name").val();
+        $.swithView("op_main", "op_scene_edit");
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
-
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
-        kp.hotspot.editondown($("#hotspot_list").val().split(","), "drag_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","));
+        kp.hotspot.atv(_name, _hotspotAtv);
+        kp.hotspot.ath(_name, _hotspotAth);
     }
 
     $('#hotspot_add_title').on("input", function (e) { on_hotspot_add_title_chang();});
-    function on_hotspot_add_title_chang()
+    function on_hotspot_edit_title_chang()
     {
         if ($('#hotspot_add_TitleView').is(':checked')) {
             hotspot_set_title($('#hotspot_name').val(), $('#hotspot_add_title').val());
@@ -116,13 +106,13 @@
         }
     }
 
-    function on_hotspot_add_image_chang() {
+    function on_hotspot_edit_image_chang() {
         $('#hotspot_add_title').val($("#hotspot_add_image").find("option:selected").text());
         on_hotspot_add_title_chang();
     }
 
 
-    function call_icon_hotspot_add_select(result)
+    function call_icon_hotspot_edit_select(result)
     {
         $('#hotspot_add_imgUrl').val(result.src);
         $('#hotspot_add_imgUrl_show').attr("src", result.src);

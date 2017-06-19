@@ -63,6 +63,7 @@
                              </div>
 
                         <!--#include virtual="project_image_hotspot_scene_add.html" -->
+                        <!--#include virtual="project_image_hotspot_scene_edit.html" -->
 
                         <div style="display:block">
                                  <input type="input" id="scene_h" value="0" />
@@ -169,8 +170,9 @@
             }
             
 
-            function pan_scene_hotspot_status(_name, h, v, _scale, _rotate, _url) {
-
+            function pan_scene_hotspot_status(_name) {
+                $("#hotspot_name").val(_name);
+                on_pan_scene_edit_hotspot();
             }
 
             function pan_scene_hotspot_status1() {
