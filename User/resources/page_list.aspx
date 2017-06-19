@@ -46,7 +46,7 @@
                                       <td>{{item.pageTitle}}</td>
                                       <td class="text-center">{{item.timeUp}}</td>
                                       <td class="text-center">
-                                          <button type="button" class="btn btn-info btn-sm" v-on:click="edit(item)">编辑</button>
+                                          <a class="btn btn-info btn-sm" :href="'/User/resources/page_view.aspx?pageId=' + item.id">编辑</a>
                                           <button type="button" class="btn btn-danger btn-sm" v-on:click="del(index, item)">刪除</button>
                                       </td>
                                   </tr>
@@ -98,11 +98,11 @@
                    del: function(index, item) {
                        this.deleteIndex = index;
                        ajax_user("pan_page_del", { callback: 'fun_del', btnfun: 'fun_load', showdata: 0, id: item.id, pageType: 1 });
-                   },
-                   edit: function(item) {
+                   }
+               /*    edit: function(item) {
                        this.editInfo = item;
                        modal_def('编辑网页','page_edit.html?call=page_editend');
-                   }
+                   }*/
                }
             });
             //  编辑时更新模态窗的数据
@@ -122,14 +122,15 @@
             {
                alert("添加完成！");
                setTimeout(function() {
-                   window.location.reload();
+                   window.location.href = '/User/resources/page_view.aspx?id=';
                }, 1000);
             }
             function fun_del(result) {
-                vm.list.data.splice(vm.deleteIndex, 1);
-                vm.list.total --;
                 vm.loading = false;
                 alert('删除成功');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
             }
             function page_editend(result)
             {

@@ -21,7 +21,10 @@
             </section>
             <section class="content" id="vue-content">
                                 
-                <div class="row">                     
+                <div class="row">
+                     <div class="col-md-12">
+
+                     </div>
 
                     <!-- 内容列表 pan_page_info_list -->
                     <!-- 有个添加按钮，可以添加内容，用弹出DIV pan_page_info_add  -->
@@ -31,11 +34,32 @@
                     <!-- 随便添加测试 -->
                     <button type="button" class="btn btn-primary" onclick="modal_def('添加网页','page_add.html?call=page_addend')">添另网页测试</button>
 
+
+
+                    <h1 class="title"></h1>
+
                 </div>
             </section>
         </div>
 
         <script>
+
+        var vm = new Vue({
+           el: '#vue-content',
+           data: function() {
+               return {
+
+               }
+           },
+           mounted: function() {
+               this.getContent();
+           },
+           methods: {
+               getContent: function() {
+                   ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, pageId: $.getUrlParam("pageId") });
+               }
+           }
+        });
 
 
             function page_addend(result)
@@ -43,7 +67,7 @@
                 alert("添加完成！");
             }
 
-            ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, pageId: $.getUrlParam("pageId") });
+          //  ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 1, pageId: $.getUrlParam("pageId") });
             function fun_list(result) {
               //var vm = new Vue({
               //  el:"#vue-content",
