@@ -26,7 +26,7 @@
                     <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
                     <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
                 </div> 
-
+                <button type="button" class="btn btn-block btn-primary btn-lg"  onclick="on_buadd_fun_del_hotspot()">删除</button>
             </div>
             <!-- /.box-body -->
 
@@ -60,29 +60,60 @@
     function on_buadd_fun_edit_hotspot()
     {
         var name = $("#hotspot_name").val();
+        var hotspotId = 0;
 
-        ajax_user("pan_hotspot_add", {
-            callback: 'fun_hotspot_add',
+        $.each(hotspotlist, function (i, skey) {
+            if (skey.hotspotName.toLowerCase() == name) {
+                hotspotId = skey.id;
+            }
+        });
+
+        ajax_user("pan_hotspot_edit", {
+            callback: 'fun_hotspot_edit',
             btnfun: 'fun_load',
             showdata: 0,
-            imageId: $.getUrlParam("id"),
-            hotspotName: name,
-            hotspotType: 0,
-            hotspotKee: 0,
+            id: hotspotId,
             imgUrl: kp.hotspot.url(name),
             hotspotAth: kp.hotspot.ath(name),
             hotspotAtv: kp.hotspot.atv(name),
             hotspotScale: kp.hotspot.scale(name),
-            hotspotTitle: $("#hotspot_add_title").val(),
-            hotspotTitleView: $("#hotspot_add_TitleView").val(),
-            hotspotData: $("#hotspot_add_image").val(),
+            hotspotTitle: $("#hotspot_edit_title").val(),
+            hotspotTitleView: $("#hotspot_edit_TitleView").val(),
             hotspotRotate: kp.hotspot.rotate(name)
         });
     }
-
     function fun_hotspot_edit(result) {
-        location.replace(location.href);
+        loading_hide();
+        modal_msg("编辑成功", 2, "");
     }
+
+    function on_buadd_fun_del_hotspot()
+    {
+        modal_mutual("删除提醒", "确定要删除当前热点吗？", function () {
+            var name = $("#hotspot_name").val();
+            var hotspotId = 0;
+
+            $.each(hotspotlist, function (i, skey) {
+                if (skey.hotspotName.toLowerCase() == name) {
+                    hotspotId = skey.id;
+                }
+            });
+
+            ajax_user("pan_hotspot_del", {
+                callback: 'fun_hotspot_del',
+                btnfun: 'fun_load',
+                showdata: 0,
+                id: hotspotId
+            });
+        });        
+    }
+    
+
+    function fun_hotspot_del(result) {
+        loading_hide();
+        modal_msg("删除成功", 2, "");
+    }
+   
     
     function on_pan_scene_edit_hotspot_cancel() {
         var _name = $("#hotspot_name").val();
@@ -91,31 +122,26 @@
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
         kp.hotspot.editondown($("#hotspot_list").val().split(","));
+
         kp.hotspot.atv(_name, _hotspotAtv);
         kp.hotspot.ath(_name, _hotspotAth);
     }
 
-    $('#hotspot_add_title').on("input", function (e) { on_hotspot_add_title_chang();});
+    $('#hotspot_edit_title').on("input", function (e) { on_hotspot_edit_title_chang(); });
     function on_hotspot_edit_title_chang()
     {
-        if ($('#hotspot_add_TitleView').is(':checked')) {
-            hotspot_set_title($('#hotspot_name').val(), $('#hotspot_add_title').val());
+        if ($('#hotspot_edit_TitleView').is(':checked')) {
+            hotspot_set_title($('#hotspot_name').val(), $('#hotspot_edit_title').val());
         }
         else {
             hotspot_set_title($('#hotspot_name').val());
         }
     }
 
-    function on_hotspot_edit_image_chang() {
-        $('#hotspot_add_title').val($("#hotspot_add_image").find("option:selected").text());
-        on_hotspot_add_title_chang();
-    }
-
-
     function call_icon_hotspot_edit_select(result)
     {
-        $('#hotspot_add_imgUrl').val(result.src);
-        $('#hotspot_add_imgUrl_show').attr("src", result.src);
+        $('#hotspot_edit_imgUrl').val(result.src);
+        $('#hotspot_edit_imgUrl_show').attr("src", result.src);
         kp.hotspot.url($("#hotspot_name").val(), result.src);
     }
 

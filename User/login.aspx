@@ -65,21 +65,95 @@
         });
 
         function fun_Login(data)
-        {          
+        {
+            loading_hide();
             if (data.status == "OK")
             {
                 location.href = "Panoramic/project_list.aspx?status=-1";
             }
             else
-                alert(data.statusMsg);
+            {
+                modal_msg(data.statusMsg,2);
+            }               
         }
 
         function fun_load(data)
         {
-            //alert("fun_load");
+            loading();
         }
 
         user_submit();
     </script>
+
+
+    
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="modal_lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal_lg_title"></h4>
+            </div>
+            <div class="modal-body" id="modal_lg_body">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" id="modal_sm" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal_sm_title"></h4>
+            </div>
+            <div class="modal-body" id="modal_sm_body">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_box" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal_box_title"></h4>
+            </div>
+            <div class="modal-body" id="modal_box_body">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_msg">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="modal_msg_body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_loading">
+    <div class="modal-dialog">
+        <div  style="color:#FFFFFF; text-align:center;">
+            <div class="overlay">
+                <i class="fa fa-refresh fa-spin" style="color:#FFFFFF"></i>
+            </div>
+            <p id="modal_loading_body" style="text-align:center"></p>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

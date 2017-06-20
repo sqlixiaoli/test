@@ -92,7 +92,8 @@
     }
 
     function fun_hotspot_add(result) {
-        location.replace(location.href);
+        loading_hide();
+        modal_msg("添加成功", 2, "");
     }
     
     function on_pan_scene_add_hotspot_cancel() {

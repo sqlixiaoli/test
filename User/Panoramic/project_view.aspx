@@ -98,8 +98,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">项目名称：</label>
                                     <p class="col-sm-10 control-label" style="text-align: left">
-                                        <a :href="'/PAN/index.aspx?id='+info.id" target="_blank">{{info.projectName}}</a>
-                       
+                                        <a :href="'/PAN/index.aspx?id='+info.id" target="_blank">{{info.projectName}}</a>                       
                                             <button type="button" @click="editProjectName(info.projectName)" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
                                     
                                     </p>
@@ -168,29 +167,33 @@
                     </div>
                 </div>
             </section>
-        </div>
-        <script>
+        </div>        
+    </div>
+
+    <script>
             ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), user: 1 });
             function fun_list(result) {
 
-              var vm = new Vue({
-                el:"#vue-projetc_view-content",
-                data:result.data,
-                methods:{
-                  editProjectName:function(projetcName){
-                    editBox("项目名称","input",function(data){alert(data)},projetcName);
-                  }
-                }
-              });
+                var vm = new Vue({
+                    el: "#vue-projetc_view-content",
+                    data: result.data,
+                    methods: {
+                        editProjectName: function (projetcName) {
+                            editBox("项目名称", "input", function (data) { alert(data) }, projetcName);
+                        }
+                    }
+                });
+
+                loading_hide();
+
             }
 
             function fun_load(data) {
                 //alert("开始加载");
+                loading();
             }
 
         </script>
-
         <!--#include virtual="/User/menu_button.html" -->
-    </div>
 </body>
 </html>

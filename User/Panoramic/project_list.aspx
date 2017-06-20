@@ -85,11 +85,12 @@
               var vm = new Vue({
                 el:"#vue-content",
                 data:result.data
-              });  
+              });
+              loading_hide();
             }
 
             function fun_load(data) {
-                //alert("开始加载");
+                loading();
             }
 
         </script>

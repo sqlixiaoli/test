@@ -7,12 +7,13 @@
     <!--#include virtual="/User/head.html" -->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper">       
 
         <!--#include virtual="/User/menu_left.html" -->
 
         <div class="content-wrapper">
 
+             
 
             <section class="content-header" id="vue-project-info">
                   <h1><a :href="'project_view.aspx?id='+project.id">{{project.projectName}}</a>  > <a :href="'project_image_list.aspx?projectid='+project.id">场景管理</a> <small> > {{info.imgTitle}}</small></h1>
@@ -42,22 +43,9 @@
               <h3 class="box-title">操作</h3>
             </div>
                               <div class="box-body pad table-responsive">
-
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
-
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_pan_scene_add_hotspot()">添加场景跳转</button>
-
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(true)">+</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_scale(false)">-</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_add()">保存数据</button>
-
-
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="pan_scene_hotspot_delete()">管理场景跳转</button>
-
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">管理热点链接</button>
-
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">设置背景音乐</button>
-
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">添加网页热点</button>
                               </div>
                              
                              </div>
@@ -65,7 +53,7 @@
                         <!--#include virtual="project_image_hotspot_scene_add.html" -->
                         <!--#include virtual="project_image_hotspot_scene_edit.html" -->
 
-                        <div style="display:block">
+                        <div style="display:none">
                                  <input type="input" id="scene_h" value="0" />
                                   <input type="input" id="scene_v" value="0" />
                                   <input type="input" id="scene_f" value="0" />
@@ -90,7 +78,8 @@
 
         <script>
 
-            ajax_user("project_image_get", { callback: 'fun_info', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), hotspot:1 });
+            ajax_user("project_image_get", { callback: 'fun_info', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), hotspot: 1 });
+            var hotspotlist = [];
             function fun_info(result) {
 
                 var vm = new Vue({
@@ -104,6 +93,8 @@
                 });
 
                 var _hotspot_list = "";
+                hotspotlist = result.data.hotspot.data;
+
                 $.each(result.data.hotspot.data, function (i, skey) {
                     if (_hotspot_list == "")
                         _hotspot_list = skey.hotspotName;
@@ -130,12 +121,14 @@
                     el: "#hotspot_add_image",
                     data: result.data
                 });
+                loading_hide();
             }
 
 
 
             function fun_load(data) {
                 //alert("开始加载");
+                loading();
             }
 
             //设置当前位置

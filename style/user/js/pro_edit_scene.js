@@ -98,7 +98,9 @@
     }
 
     kp.hotspot.gettitle = function (_name) {
-       return  panobj.contentWindow.getkp().get("plugin['tooltip_" + _name + "'].html");
+        var _title = panobj.contentWindow.getkp().get("plugin['tooltip_" + _name + "'].html");
+        if (_title == null) _title = "";
+        return _title;
     }
 
 })();
