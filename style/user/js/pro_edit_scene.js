@@ -10,7 +10,7 @@
         return panobj.contentWindow.getkp().get("hotspot['" + name + "']." + atc);
     }    
     
-    $(["visible", "ath", "atv", "rotate", "zoom", "scale", "url", "handcursor", "alpha", "autoalpha", "handcursor", "onloaded", "ondown", "onclick"]).each(function (i, el) {
+    $(["visible", "ath", "atv", "rotate", "zoom", "scale", "url", "handcursor", "alpha", "autoalpha", "onloaded", "ondown", "onclick"]).each(function (i, el) {
         kp.hotspot[el] = function (name,val) {
             if (val == null)
             { return kp.hotspot.get(name, el) }

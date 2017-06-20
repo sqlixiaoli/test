@@ -92,18 +92,25 @@
     }
 
     function fun_hotspot_add(result) {
+        set_hotspotlist(result.data.hotspot.data);
         loading_hide();
-        modal_msg("添加成功", 2, "");
+        $.swithView("op_main", "op_scene_add");       
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
+
+        modal_msg("添加成功");
     }
     
     function on_pan_scene_add_hotspot_cancel() {
         $.swithView("op_main", "op_scene_add");
         kp.hotspot.visible($("#hotspot_name").val(), false);
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
-
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
-        kp.hotspot.editondown($("#hotspot_list").val().split(","), "drag_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
     }
 
     $('#hotspot_add_title').on("input", function (e) { on_hotspot_add_title_chang();});

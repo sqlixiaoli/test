@@ -92,17 +92,7 @@
                     data: result.data
                 });
 
-                var _hotspot_list = "";
-                hotspotlist = result.data.hotspot.data;
-
-                $.each(result.data.hotspot.data, function (i, skey) {
-                    if (_hotspot_list == "")
-                        _hotspot_list = skey.hotspotName;
-                    else
-                        _hotspot_list = _hotspot_list + "," + skey.hotspotName;
-                });
-
-                $("#hotspot_list").val(_hotspot_list);
+                set_hotspotlist(result.data.hotspot.data);
 
                 $("#project_id").val(result.data.project.id);
                 ajax_user("pan_group_list", { callback: 'fun_list_group', btnfun: 'fun_load', showdata: 0, projectId: $("#project_id").val() });
@@ -143,50 +133,36 @@
                 $("#scene_h").val(h);
                 $("#scene_v").val(v);
                 $("#scene_f").val(f);
-            }
-
-            function pan_scene_add_hotspot() {
-                var panobj = document.getElementById("panobj");
-                var _name = "hotspot_" + Math.uuid(18, 16);
-                var _title = "1";
-                kp.hotspot.add(_name, "/File/icon/vtourskin_hotspot.png", $("#scene_h").val(), $("#scene_v").val(), _title);
-                $("#hotspot_name").val(_name);
-                $("#hotspot_title").val(_title);
-            }
-
-            function pan_scene_hotspot_scale(isadd) {
-                var name = $("#hotspot_name").val();
-                if (isadd) {
-                    kp.hotspot.scale(name, kp.hotspot.scale(name) + 0.1);
-                }
-                else { kp.hotspot.scale(name, kp.hotspot.scale(name) - 0.1); }
-            }
-            
+            }                       
 
             function pan_scene_hotspot_status(_name) {
                 $("#hotspot_name").val(_name);
                 on_pan_scene_edit_hotspot();
             }
 
-            function pan_scene_hotspot_status1() {
-                //var name = $("#hotspot_name").val();
-                //$("#hotspot_h").val(pan_hotspot_get_val(name, "ath"));            
+            function set_hotspotlist(list)
+            {
+                var _hotspot_list = "";
+                hotspotlist = list;
+                $.each(hotspotlist, function (i, skey) {
+                    if (_hotspot_list == "")
+                        _hotspot_list = skey.hotspotName;
+                    else
+                        _hotspot_list = _hotspot_list + "," + skey.hotspotName;
+                });
+                $("#hotspot_list").val(_hotspot_list);
             }
+            function get_hotspotId(name)
+            {
+                var hotspotId = 0;
 
-            function pan_scene_hotspot_delete() {
-                // var name = $("#hotspot_name").val();
-                //// kp.hotspot.visible(name, false);
-                // alert(kp.hotspot.ath(name));
-                // alert(kp.hotspot.ath(name));
+                $.each(hotspotlist, function (i, skey) {
+                    if (skey.hotspotName.toLowerCase() == name) {
+                        hotspotId = skey.id;
+                    }
+                });
+                return hotspotId;
             }
-
-            //function pan_hotspot_get_val(_name,ac)
-            //{
-            //    return panobj.contentWindow.getkp().get("hotspot['" + _name + "']." + ac);
-            //}
-            //function pan_hotspot_get_set(_name, ac,val) {
-            //    panobj.contentWindow.getkp().set("hotspot['" + _name + "']." + ac,val);
-            //}
 
             //通用函数
             function hotspot_set_title(_name, _title)

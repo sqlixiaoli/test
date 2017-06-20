@@ -60,14 +60,7 @@
     function on_buadd_fun_edit_hotspot()
     {
         var name = $("#hotspot_name").val();
-        var hotspotId = 0;
-
-        $.each(hotspotlist, function (i, skey) {
-            if (skey.hotspotName.toLowerCase() == name) {
-                hotspotId = skey.id;
-            }
-        });
-
+        var hotspotId = get_hotspotId(name);
         ajax_user("pan_hotspot_edit", {
             callback: 'fun_hotspot_edit',
             btnfun: 'fun_load',
@@ -83,22 +76,21 @@
         });
     }
     function fun_hotspot_edit(result) {
-        loading_hide();
-        modal_msg("编辑成功", 2, "");
+        $.swithView("op_main", "op_scene_edit");
+        loading_hide();        
+        modal_msg("编辑成功");
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","));
     }
 
     function on_buadd_fun_del_hotspot()
     {
         modal_mutual("删除提醒", "确定要删除当前热点吗？", function () {
-            var name = $("#hotspot_name").val();
-            var hotspotId = 0;
 
-            $.each(hotspotlist, function (i, skey) {
-                if (skey.hotspotName.toLowerCase() == name) {
-                    hotspotId = skey.id;
-                }
-            });
-
+            var hotspotId = get_hotspotId($("#hotspot_name").val());
             ajax_user("pan_hotspot_del", {
                 callback: 'fun_hotspot_del',
                 btnfun: 'fun_load',
@@ -110,8 +102,18 @@
     
 
     function fun_hotspot_del(result) {
+        $.swithView("op_main", "op_scene_edit");
         loading_hide();
-        modal_msg("删除成功", 2, "");
+        set_hotspotlist(result.data.hotspot.data);
+        kp.hotspot.visible($("#hotspot_name").val(), false);
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","));
+
+
+        modal_msg("删除成功");
     }
    
     
