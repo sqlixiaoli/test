@@ -77,9 +77,7 @@
                    return {
                        loading: false,
                        list: {},
-                       page: 1, //  当前要请求第几页
-                       editInfo: {},  //  保存正在编辑的某一项数据
-                       deleteIndex: 0  //  要删除的数据的索引
+                       page: 1 //  当前要请求第几页
                    }
                },
                mounted: function() {
@@ -96,33 +94,23 @@
                        ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
                    },
                    del: function(index, item) {
-                       this.deleteIndex = index;
                        ajax_user("pan_page_del", { callback: 'fun_del', btnfun: 'fun_load', showdata: 0, id: item.id, pageType: 1 });
                    }
-               /*    edit: function(item) {
-                       this.editInfo = item;
-                       modal_def('编辑网页','page_edit.html?call=page_editend');
-                   }*/
                }
             });
-            //  编辑时更新模态窗的数据
-             $(document).on('shown.bs.modal', '#modal_box', function () {
-                 $('#pan_page_edit').find('input[name="pageTitle"]').val(vm.editInfo.pageTitle).end().find('input[name="id"]').val(vm.editInfo.id);
-             });
             function fun_list(result) {
                 vm.list = {};
                 vm.list = result.data.list;
                 vm.loading = false;
             }
             function fun_load(data) {
-               // alert("开始加载");
                 vm.loading = true;
             }
             function page_addend(result)
             {
                alert("添加完成！");
                setTimeout(function() {
-                   window.location.href = '/User/resources/page_view.aspx?id=';
+                   window.location.href = '/User/resources/page_view.aspx?pageId=' +result.data.pageId;
                }, 1000);
             }
             function fun_del(result) {
@@ -131,14 +119,6 @@
                 setTimeout(function() {
                     window.location.reload();
                 }, 1000);
-            }
-            function page_editend(result)
-            {
-                vm.editInfo = {};
-                 setTimeout(function() {
-                     window.location.reload();
-                 }, 1000);
-                alert("编辑完成！");
             }
         </script>
 

@@ -1,0 +1,128 @@
+//  自定义编辑器样式（网页内容详情页）
+@blue: #00c0ef;
+.editor-content {
+  .page-title {
+    padding: 20px;
+    background: #fff;
+    line-height: 30px;
+    font-size: 20px;
+  }
+  .page-title, .area {
+    position: relative;
+   // padding-bottom: 50px;
+    &:hover {
+      .tool {
+        display: inline-block;
+      }
+    }
+  }
+
+  .html-body {
+    padding: 20px;
+    background: #fff;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .title-l1 {
+    font-size: 24px;
+  }
+  .title-l2 {
+    font-size: 18px;
+    text-indent: 2em;
+  }
+  input.title-l2 {
+    text-indent: 0;
+  }
+  .desc {
+
+  }
+  .img {
+    text-align: center;
+    img {
+      max-width: 95%;
+    }
+  }
+
+  .tool {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px 15px;
+  //  background: #fff;
+    z-index: 10;
+    font-size: 20px;
+    display: none;
+  }
+  .fa {
+    margin: 0 10px;
+  }
+
+
+  input[type="text"] {
+    border: 0;
+    border-bottom: 1px solid @blue;
+    padding: 0 15px;
+    line-height: 2em;
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  .area {
+    margin: 5px 0;
+    &:hover {
+      background: #e5e5e5;
+    }
+    input[type="text"] {
+      width: 100%;
+    }
+  }
+
+  textarea {
+    padding: 15px;
+    line-height: 1.6em;
+    width: 100%;
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  .img-upload {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    color: #999;
+    text-align: center;
+    font-size: 16px;
+    input[type="file"] {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      position: absolute;
+      z-index: 9;
+      cursor: pointer;
+    }
+    .icon-add {
+      display: block;
+      margin: 60px auto 20px auto;
+      width: 30px;
+      height: 30px;
+      position: relative;
+      &:after {
+        border-left: 1px solid #ccc;
+        height: 100%;
+      }
+      &:before {
+        border-top: 1px solid #ccc;
+        width: 100%;
+        left: 0;
+        top: 50%;
+      }
+      &:after, &:before {
+        content: '';
+        position: absolute;
+      }
+    }
+  }
+}
