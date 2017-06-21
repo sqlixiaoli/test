@@ -45,10 +45,16 @@
                               <div class="box-body pad table-responsive">
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_pan_scene_add_hotspot()">添加场景跳转</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg">添加网页热点</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_page_add.html')">添加网页热点</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_image_add.html')">添加贴图</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="">添加动画特效</button>
                               </div>
                              
                              </div>
+
+
+                         <div class="box box-primary" id="op_setinfo" style="display:none">
+                         </div>
 
                         <!--#include virtual="project_image_hotspot_scene_add.html" -->
                         <!--#include virtual="project_image_hotspot_scene_edit.html" -->
@@ -126,7 +132,7 @@
                 ajax_user("project_image_edit", { callback: 'fun_set_now_address', showdata: 0, id: $.getUrlParam("id"), hlookat: $("#scene_h").val(), vlookat: $("#scene_v").val(), fov: $("#scene_f").val() });
             }
             function fun_set_now_address(result) {
-                alert("设置成功！");
+                modal_msg("设置成功！");
             }
 
             function pan_scene_now_address(h, v, f) {
@@ -165,6 +171,16 @@
             }
 
             //通用函数
+
+            function set_info(_url)
+            {
+                $.swithView("op_setinfo", "op_main");
+                $("#op_setinfo").load(_url);
+            }
+            function set_info_close() {
+                $.swithView("op_main", "op_setinfo");
+            }
+
             function hotspot_set_title(_name, _title)
             {
                 kp.hotspot.title(_name, _title);

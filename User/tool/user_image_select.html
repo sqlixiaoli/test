@@ -1,0 +1,29 @@
+﻿<div id="image_user_list_box">
+
+    <div class="icon_select_item" v-for="item in list.data">
+        <img :src="item.imgFile" onclick="fun_select_item(this)" />
+        <p class="widget-user-desc">{{item.imgTitle}}</p>
+    </div>
+
+
+    <div style="clear:both"></div>
+</div>
+
+<script>
+    ajax_user("resources_image_list", { callback: 'fun_image_list', showdata: 0, imgType: 2, projectId: modal_url_pra("project_id") });
+    function fun_image_list(result) {
+        var vm = new Vue({
+            el: "#image_user_list_box",
+            data: result.data
+        });
+    }
+
+    function fun_select_item(_img)
+    {
+        var _data = new Object();
+        _data = { src: $(_img).attr("src")};
+        modal_hide();
+        setTimeout(function () { var a = eval(modal_url_pra("call")); a(_data); }, 10);
+    }
+
+</script>
