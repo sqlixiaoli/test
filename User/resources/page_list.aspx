@@ -99,9 +99,10 @@
             });
 
             function cal_fun_del() {
-                ajax_user("pan_page_del", { callback: 'fun_del_success', btnfun: 'fun_load', showdata: 0, id: vm.deleteInfo.id, pageType: 1 });
+                ajax_user("pan_page_del", { callback: 'fun_del_success', btnfun: 'fun_load_del', showdata: 0, id: vm.deleteInfo.id, pageType: 1 });
             }
             function fun_del_success(result) {
+                loading_hide();
                 modal_msg("删除成功",2, "");  // 刷新页面
             }
             function fun_list(result) {
@@ -109,6 +110,9 @@
                 vm.list = result.data.list;
                 vm.loading = false;
                 loading_hide();
+            }
+            function fun_load_del(data) {
+                 loading("正在删除……");
             }
             function fun_load(data) {
                 vm.loading = true;

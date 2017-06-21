@@ -90,13 +90,14 @@
             el: '#vue-content',
             data: function() {
                 return {
-                    pageTitle: '页面标题',
+                    pageTitle: '',
                     list: [],
                     deleteInfo: {deleteIndex: ''},
                     minOrderBy: 0  // 基于 orderBy
                 }
             },
             mounted: function() {
+                ajax_user("pan_page_get", { callback: 'fun_page_get', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("pageId") });
                 ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, pageId: $.getUrlParam("pageId") });
             },
             methods: {
@@ -112,6 +113,12 @@
         });
         function page_addend(result){  //  添加新网页
           modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.id);
+        }
+        function fun_page_get(result) {
+            if(result.status === 'OK' || result.status === 'ok') {
+                vm.pageTitle = result.data.info.pageTitle;
+            }
+            loading_hide();
         }
         function fun_list(result) {  //  获取到内容列表
             vm.list = [];
@@ -138,9 +145,7 @@
             }else {
                 modal_msg(result.statusMsg);
             }
-
         }
-
 
         function page_edit_pageTitle(data) {  //  编辑 页面标题 完成
             vm.pageTitle = data.data.info.pageTitle;
@@ -150,9 +155,8 @@
             //  更新列表，  更新orderby
         }
 
-
         function page_edit_info_end(result) {//  编辑  图片、标题一、标题二、内容  完成
-
+          //  更新列表，  更新orderby
         }
     </script>
 
