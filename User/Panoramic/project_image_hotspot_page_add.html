@@ -1,0 +1,150 @@
+﻿
+<div class="box-header">
+    <i class="fa fa-edit"></i>
+    <h3 class="box-title">添加网页热点</h3>
+</div>
+
+
+<div class="box-body">
+
+    <div class="form-group">
+        <label>资源类型</label>
+        <select class="form-control" id="select_resource" onchange="on_select_resource_chang()">            
+            <option v-for="item in list.data" value="1">我的资源库</option>
+            <option v-for="item in list.data" value="2">项目资源库</option>
+            <option v-for="item in list.data" value="0">系统资源库</option>
+        </select>
+    </div>   
+
+    <div class="form-group">
+        <label>选择网页</label>
+        <select class="form-control" id="select_page" onchange="on_select_page_chang()">
+            <option v-for="item in list.data" :value="item.uuid">{{item.pageTitle}}</option>
+        </select>
+    </div> 
+
+    <div class="form-group">
+        <label>热点标题</label>
+        <input class="form-control" id="hotspot_title" type="text">
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" checked="checked" id="hotspot_TitleView" onchange="on_hotspot_title_chang()"> 是否显示热点标题
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">热点图标</label>
+        <img onclick="tool_icon_select('call_icon_hotspot_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
+        <input type="hidden" id="hotspot_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
+        <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
+        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
+    </div>
+</div>
+<!-- /.box-body -->
+
+<div class="box-footer">
+    <button type="button" class="btn btn-primary" onclick="on_hotspot_save()">保存</button>
+    <button type="button" class="btn btn-default pull-right" onclick="on_hotspot_cancel()">取消</button>
+</div>
+
+<script>
+    on_select_resource_chang();
+    function on_select_resource_chang()
+    { ajax_user("pan_page_list", { callback: 'fun_pagelist', btnfun: 'loading', showdata: 0, pageType: $("#select_resource").val(), projectId: $("#project_id").val() }); }
+
+
+    function fun_pagelist(result)
+    {
+        var vm = new Vue({
+            el: "#select_page",
+            data: result.data
+        });
+        on_select_page_chang();   
+
+
+        var _name = "hotspot_" + Math.uuid(18, 16);
+        var _title = $('#hotspot_title').val();
+        kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), _title);
+        $("#hotspot_name").val(_name);
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","));
+        kp.hotspot.editondown($("#hotspot_list").val().split(","));
+
+        loading_hide();
+    }
+   
+    function on_hotspot_save()
+    {
+        var name = $("#hotspot_name").val();
+
+        ajax_user("pan_hotspot_add", {
+            callback: 'pan_hotspot_save',
+            btnfun: 'loading',
+            showdata: 0,
+            imageId: $.getUrlParam("id"),
+            hotspotName: name,
+            hotspotType: 3,
+            hotspotKee: 0,
+            imgUrl: kp.hotspot.url(name),
+            hotspotAth: kp.hotspot.ath(name),
+            hotspotAtv: kp.hotspot.atv(name),
+            hotspotScale: kp.hotspot.scale(name),
+            hotspotTitle: $("#hotspot_title").val(),
+            hotspotTitleView: $("#hotspot_TitleView").val(),
+            hotspotData: $("#select_page").val(),
+            hotspotRotate: kp.hotspot.rotate(name)
+        });
+    }
+
+    function pan_hotspot_save(result)
+    {
+        set_hotspotlist(result.data.hotspot.data);
+        loading_hide();
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
+
+        modal_msg("添加成功");
+
+
+        set_info_close();
+    }
+
+    function on_hotspot_cancel() {        
+        kp.hotspot.visible($("#hotspot_name").val(), false);
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
+        set_info_close();
+    }
+
+    function on_select_page_chang()
+    {
+        $('#hotspot_title').val($("#select_page").find("option:selected").text());
+        on_hotspot_title_chang();
+    }
+
+    $('#hotspot_title').on("input", function (e) { on_hotspot_title_chang(); });
+    function on_hotspot_title_chang() {
+        if ($('#hotspot_TitleView').is(':checked')) {
+            hotspot_set_title($('#hotspot_name').val(), $('#hotspot_title').val());
+        }
+        else {
+            hotspot_set_title($('#hotspot_name').val());
+        }
+    }
+
+    function call_icon_hotspot_select(result) {
+        $('#hotspot_imgUrl').val(result.src);
+        $('#hotspot_imgUrl_show').attr("src", result.src);
+        kp.hotspot.url($("#hotspot_name").val(), result.src);
+    }
+
+</script>

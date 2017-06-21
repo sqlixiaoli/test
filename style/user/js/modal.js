@@ -107,3 +107,7 @@ function modal_mutual(title, msg, call_define, call_cancel)
 function tool_icon_select(call_fun) {
     modal_lg("选择ICON", "/User/tool/icon_select.html?call=" + call_fun)
 }
+
+function tool_user_image_select(call_fun, project_id) {
+    modal_lg("选择贴图", "/User/tool/user_image_select.html?project_id=" + project_id + "&call=" + call_fun)
+}
