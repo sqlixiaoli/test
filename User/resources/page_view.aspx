@@ -9,13 +9,6 @@
 
     <link rel="stylesheet" href="../../style/user/css/defined-editor.css">
 
-
-
-    <style>
-    .main-sidebar, .main-header, .main-footer {
-    display: none !important;
-    }
-</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -26,10 +19,9 @@
 
 
     <div class="content-wrapper">
-<!--
         <section class="content-header">
             <h1>网页管理<small>0</small></h1>
-        </section>-->
+        </section>
         <section class="content" id="vue-content">
             <div class="row">
                 <!-- 内容列表 pan_page_info_list -->
@@ -64,13 +56,13 @@
                                 <draggable :list="list">
                                     <transition-group name="list-complete">
                                         <div class="area" v-for="(item, index) in list" :key="index" v-if="list.length > 0">
-                                            <div v-if="item.infoType == 1" class="title-l1">{{item.inputInfo}}</div>
-                                            <div v-if="item.infoType == 2" class="title-l2">{{item.inputInfo}}</div>
-                                            <div v-if="item.infoType == 0" class="desc">{{item.inputInfo}}</div>
-                                            <img v-if="item.infoType == 10" :src="item.filepath" alt="" class="img" />
+                                            <div v-if="item.infoType == 1" class="title-l1">{{item.info}}</div>
+                                            <div v-if="item.infoType == 2" class="title-l2">{{item.info}}</div>
+                                            <div v-if="item.infoType == 0" class="desc">{{item.info}}</div>
+                                            <img v-if="item.infoType == 10" :src="item.info" alt="" class="img" />
                                             <div class="tool">
                                                 <span class="fa fa-edit" role="button"
-                                                      v-on:click="modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&infoType=' +item.infoType+ '&orderBy='+(item.orderBy+1))"></span>
+                                                      v-on:click="modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&info='+item.info+'&infoType=' +item.infoType+ '&orderBy='+(item.orderBy+1))"></span>
                                                 <span class="fa fa-trash"
                                                       v-on:click="del(item, index)" role="button"></span>
                                                 <span class="fa fa-image"
@@ -119,7 +111,7 @@
             }
         });
         function page_addend(result){  //  添加新网页
-            modal_msg("添加完成");
+          modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.id);
         }
         function fun_list(result) {  //  获取到内容列表
             vm.list = [];
