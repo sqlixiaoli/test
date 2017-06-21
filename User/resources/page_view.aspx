@@ -70,17 +70,17 @@
                                             <img v-if="item.infoType == 10" :src="item.filepath" alt="" class="img" />
                                             <div class="tool">
                                                 <span class="fa fa-edit" role="button"
-                                                      v-on:click="modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&infoType=' +item.infoType+ '&orderBy='+(maxOrderBy+1))"></span>
+                                                      v-on:click="modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&infoType=' +item.infoType+ '&orderBy='+(item.orderBy+1))"></span>
                                                 <span class="fa fa-trash"
                                                       v-on:click="del(item, index)" role="button"></span>
                                                 <span class="fa fa-image"
-                                                      v-on:click="modal_def('插入图片','page_add_info.html?call=page_add_info_end&infoType=10&orderBy='+(maxOrderBy+1))" role="button"></span>
+                                                      v-on:click="modal_def('插入图片','page_add_info.html?call=page_add_info_end&infoType=10&orderBy='+(item.orderBy+1))" role="button"></span>
                                                 <span class="fa fa-file-text-o"
-                                                      v-on:click="modal_def('添加内容','page_add_info.html?call=page_add_info_end&infoType=0&orderBy='+(maxOrderBy+1))" role="button"></span>
+                                                      v-on:click="modal_def('添加内容','page_add_info.html?call=page_add_info_end&infoType=0&orderBy='+(item.orderBy+1))" role="button"></span>
                                                 <span class="fa"
-                                                      v-on:click="modal_def('添加标题一','page_add_info.html?call=page_add_info_end&infoType=1&orderBy='+(maxOrderBy+1))" role="button">H1</span>
+                                                      v-on:click="modal_def('添加标题一','page_add_info.html?call=page_add_info_end&infoType=1&orderBy='+(item.orderBy+1))" role="button">H1</span>
                                                 <span class="fa"
-                                                      v-on:click="modal_def('添加标题二','page_add_info.html?call=page_add_info_end&infoType=2&orderBy='+(maxOrderBy+1))" role="button">H2</span>
+                                                      v-on:click="modal_def('添加标题二','page_add_info.html?call=page_add_info_end&infoType=2&orderBy='+(item.orderBy+1))" role="button">H2</span>
                                             </div>
                                         </div>
                                     </transition-group>
@@ -101,8 +101,7 @@
                     pageTitle: '页面标题',
                     list: [],
                     deleteInfo: {deleteIndex: ''},
-                    minOrderBy: 0,  // 基于 orderBy
-                    maxOrderBy: 0   // 基于 orderBy
+                    minOrderBy: 0  // 基于 orderBy
                 }
             },
             mounted: function() {
@@ -127,11 +126,9 @@
             vm.list = result.data.list.data;
             if(vm.list.length > 0) {
                 vm.minOrderBy = vm.list[0].orderBy;
-                vm.maxOrderBy = vm.list[0].orderBy;
             }
             for(var key in vm.list) {
                 vm.minOrderBy = Math.min(vm.minOrderBy, vm.list[key].orderBy);
-                vm.maxOrderBy = Math.max(vm.maxOrderBy, vm.list[key].orderBy);
             }
             loading_hide();
         }
