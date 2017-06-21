@@ -102,7 +102,7 @@
                     list: [],
                     deleteInfo: {deleteIndex: ''},
                     minOrderBy: 0,  // 基于 orderBy
-                    maxOrderBy: 1   // 基于 orderBy
+                    maxOrderBy: 0   // 基于 orderBy
                 }
             },
             mounted: function() {
@@ -125,6 +125,10 @@
         function fun_list(result) {  //  获取到内容列表
             vm.list = [];
             vm.list = result.data.list.data;
+            if(vm.list.length > 0) {
+                vm.minOrderBy = vm.list[0].orderBy;
+                vm.maxOrderBy = vm.list[0].orderBy;
+            }
             for(var key in vm.list) {
                 vm.minOrderBy = Math.min(vm.minOrderBy, vm.list[key].orderBy);
                 vm.maxOrderBy = Math.max(vm.maxOrderBy, vm.list[key].orderBy);
