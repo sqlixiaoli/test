@@ -1,0 +1,95 @@
+﻿<form action="pan_page_info_add" method="post" class="form-horizonal">
+    <input type="hidden" name="callback" value="fun_page_add" />
+    <input type="hidden" name="btnfun" value="fun_page_load" />
+    <input type="hidden" name="showdata" value="0" />
+
+    <input type="hidden" name="pageId" />
+    <input type="hidden" name="infoType" />
+    <input type="hidden" name="orderBy" />
+
+    <div class="box-body">
+        <div class="form-group clearfix hidden" id="pan_page_h1">
+            <label class="control-label col-sm-2">标题一：</label>
+            <div class="col-sm-6">
+                <input class="form-control title-l1" name="info" type="text" placeholder="请输入标题一" />
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="form-group clearfix hidden" id="pan_page_h2">
+            <label class="control-label col-sm-2">标题二：</label>
+            <div class="col-sm-6">
+                <input class="form-control title-l2" name="info" type="text" placeholder="请输入标题二" />
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="form-group clearfix hidden" id="pan_page_content">
+            <label class="control-label col-sm-2">内容：</label>
+            <div class="col-sm-10">
+                <textarea class="form-control desc" name="info" placeholder="请输入内容" cols="30" rows="10"></textarea>
+            </div>
+            <div class="help-block col-sm-10 col-sm-offset-2"></div>
+        </div>
+
+        <div class="form-group clearfix hidden" id="pan_page_image">
+            <label class="control-label col-sm-3">上传图片：</label>
+            <div class="col-sm-6">
+                <label type="button" for="fileupload" class="btn btn-primary">上传图片</label>
+                <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename">
+                <input class="form-control" type="text" name="info" readonly placeholder="" style="margin: 10px 0;" />
+            </div>
+            <div class="help-block col-sm-3"></div>
+        </div>
+
+        <div class="box-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary submit_user">保存</button>
+        </div>
+
+    </div>
+</form>
+
+<script>
+    user_submit();
+    var $form = $('.submit_user').parents('form');
+    $form.find('input[name="pageId"]').val($.getUrlParam("pageId"));
+    $form.find('input[name="infoType"]').val(modal_url_pra('infoType'));
+    $form.find('input[name="orderBy"]').val(modal_url_pra('orderBy'));
+    switch(parseInt(modal_url_pra('infoType'))) {
+        case 0:
+            $('#pan_page_content').removeClass('hidden').siblings('.form-group').remove();
+            break;
+        case 1:
+            $('#pan_page_h1').removeClass('hidden').siblings('.form-group').remove();
+            break;
+        case 2:
+            $('#pan_page_h2').removeClass('hidden').siblings('.form-group').remove();
+            break;
+        case 10:
+            $('#pan_page_image').removeClass('hidden').siblings('.form-group').remove();
+            break;
+        default:break;
+    }
+
+    function fun_page_add(result) {
+        if(result.status === 'ok') {
+            modal_msg("添加完成");
+            setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
+            modal_box_hide();
+        }else {
+            modal_msg(result.statusMsg);
+        }
+        loading_hide();
+    }
+    function fun_page_load() {
+        loading('正在添加，请稍等...');
+    }
+    $form.find('#fileupload').fileupload({
+        autoUpload: true,
+        dataType: 'json',
+        done: function (e,data) {
+            $form.find('input[name="info"]').val(data.result.data.filepath);
+        }
+    });
+</script>

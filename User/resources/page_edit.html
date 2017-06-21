@@ -1,0 +1,40 @@
+﻿<form action="pan_page_edit" method="post" class="form-horizontal">
+
+    <input type="hidden" name="callback" value="fun_page_add" />
+    <input type="hidden" name="btnfun" value="fun_page_load" />
+    <input type="hidden" name="showdata" value="0" />
+    <input type="hidden" name="id" id="pan_page_edit_id" />
+
+    <div class="box-body">
+        <!-- text input -->
+        <div class="form-group">
+            <label class="col-sm-2 control-label">网页标题</label>
+            <div class="col-sm-6">
+                <input id="page_title" name="pageTitle" class="form-control" placeholder="请输入标题 ..." type="text">
+            </div>
+            <span class="help-block col-sm-4">*标题长度不能超过15个字符</span>
+        </div>
+
+        <div class="box-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary submit_user">保存</button>
+        </div>
+
+    </div>
+</form>
+
+
+<script>
+    user_submit();
+    $('#page_title').val(modal_url_pra('pageTitle'));
+    $('#pan_page_edit_id').val($.getUrlParam("pageId"));
+    function fun_page_add(result) {
+        modal_box_hide();       
+        setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
+    }
+
+    function fun_page_load(data) {
+      //  loading('加载中...')
+    }
+
+</script>

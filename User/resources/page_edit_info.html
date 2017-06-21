@@ -1,0 +1,84 @@
+﻿<form action="pan_page_info_edit" class="form-horizonal" method="post"  id="pan_page_info_add">
+    <input type="hidden" name="callback" value="fun_page_add" />
+    <input type="hidden" name="btnfun" value="fun_page_load" />
+    <input type="hidden" name="showdata" value="0" />
+
+    <input type="hidden" name="pageId" v-model="pageId" />
+    <input type="hidden" name="infoType" v-model="infoType" />
+    <input type="hidden" name="orderBy" v-model="orderBy" />
+
+
+
+    <div class="box-body">
+        <div class="form-group" v-if="infoType == 1">
+            <label class="control-label col-sm-2">标题一：</label>
+            <div class="col-sm-6">
+                <input class="form-control title-l1" type="text" placeholder="请输入标题一" v-model="info" />
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="form-group" v-if="infoType == 2">
+            <label class="control-label col-sm-2">标题二：</label>
+            <div class="col-sm-6">
+                <input class="form-control title-l2" type="text" placeholder="请输入标题二"  v-model="info" />
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="form-group" v-if="infoType == 0">
+            <label class="control-label col-sm-2">内容：</label>
+            <div class="col-sm-6">
+                <textarea class="form-control desc" placeholder="请输入内容" cols="30" rows="10" v-model="info"></textarea>
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="form-group" v-if="infoType == 10">
+            <label class="control-label col-sm-2">上传图片：</label>
+            <div class="col-sm-6">
+                <label type="button" for="fileupload" class="btn btn-primary">上传图片</label>
+                <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename">
+                <input id="filepath" name="imgfile" type="text">
+            </div>
+            <div class="help-block col-sm-4"></div>
+        </div>
+
+        <div class="box-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary submit_user">保存</button>
+        </div>
+
+    </div>
+
+
+</form>
+
+<script>
+    user_submit();
+    new Vue({
+        el: '#pan_page_info_add',
+        data: function() {
+            return {
+                info: '',
+                infoType: modal_url_pra('infoType'),
+                pageId: $.getUrlParam("pageId"),
+                orderBy: modal_url_pra('orderBy')
+            }
+        }
+    });
+    function fun_page_add() {
+        modal_msg("添加完成");
+        //  更新内容列表
+    }
+    function fun_page_load() {
+        loading('正在添加，请稍等...');
+    }
+    $('#pan_page_info_add #fileupload').fileupload({
+        autoUpload: true,
+        dataType: 'json',
+        done: function (e,data) {
+            $("#pan_page_info_add #filepath").val(data.result.data.filepath);
+        }
+    });
+</script>

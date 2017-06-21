@@ -8,6 +8,14 @@
     <!--#include virtual="/User/head.html" -->
 
     <link rel="stylesheet" href="../../style/user/css/defined-editor.css">
+
+
+
+    <style>
+    .main-sidebar, .main-header, .main-footer {
+    display: none !important;
+    }
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -18,10 +26,10 @@
 
 
     <div class="content-wrapper">
-
+<!--
         <section class="content-header">
             <h1>网页管理<small>0</small></h1>
-        </section>
+        </section>-->
         <section class="content" id="vue-content">
             <div class="row">
                 <!-- 内容列表 pan_page_info_list -->
@@ -33,60 +41,46 @@
                     <div class="box box-info">
                         <div class="box-header with-border clearfix">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加网页</button>
+                                <button type="button" class="btn btn-primary" onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加网页</button>
                             </div>
                         </div>
                         <div class="box-body editor-content">
                             <header class="page-title">
-                                <span v-if="!isEditTitle">{{pageTitle}}</span>
-                                <input type="text" v-if="isEditTitle" v-model="pageTitle" placeholder="请输入网页标题" />
-                                <span class="fa fa-edit" v-on:click="isEditTitle = true" v-if="!isEditTitle" role="button"></span>
-                                <span class="fa fa-floppy-o" v-on:click="isEditTitle = false" v-if="isEditTitle" role="button"></span>
+                                <span>{{pageTitle}}</span>
+                                <span class="fa fa-edit" role="button"
+                                      v-on:click="modal_def('编辑网页标题', 'page_edit.html?call=page_edit_pageTitle&pageTitle='+pageTitle)"></span>
                                 <div class="tool">
-                                    <span class="fa fa-image" v-on:click="insert(-1, 10)" role="button"></span>
-                                    <span class="fa fa-file-text-o" v-on:click="insert(-1, 0)" role="button"></span>
-                                    <span class="fa" v-on:click="insert(-1, 1)" role="button">H1</span>
-                                    <span class="fa" v-on:click="insert(-1, 2)" role="button">H2</span>
+                                    <span class="fa fa-image"
+                                          v-on:click="modal_def('插入图片','page_add_info.html?call=page_add_info_end&infoType=10&orderBy='+(minOrderBy-1))" role="button"></span>
+                                    <span class="fa fa-file-text-o"
+                                          v-on:click="modal_def('添加内容','page_add_info.html?call=page_add_info_end&infoType=0&orderBy='+(minOrderBy-1))" role="button"></span>
+                                    <span class="fa"
+                                          v-on:click="modal_def('添加标题一','page_add_info.html?call=page_add_info_end&infoType=1&orderBy='+(minOrderBy-1))" role="button">H1</span>
+                                    <span class="fa"
+                                          v-on:click="modal_def('添加标题二','page_add_info.html?call=page_add_info_end&infoType=2&orderBy='+(minOrderBy-1))" role="button">H2</span>
                                 </div>
                             </header>
                             <article class="html-body">
                                 <draggable :list="list">
                                     <transition-group name="list-complete">
                                         <div class="area" v-for="(item, index) in list" :key="index" v-if="list.length > 0">
-                                            <div v-if="item.type == 1">
-                                                <div class="title-l1" v-if="!item.isEdit">{{item.inputInfo}}</div>
-                                                <input class="title-l1" type="text" placeholder="请输入标题一" v-if="item.isEdit"
-                                                       v-model="item.inputInfo" />
-                                            </div>
-                                            <div v-if="item.type == 2">
-                                                <div class="title-l2" v-if="!item.isEdit">{{item.inputInfo}}</div>
-                                                <input class="title-l2" type="text" placeholder="请输入标题二" v-if="item.isEdit"
-                                                       v-model="item.inputInfo" />
-                                            </div>
-                                            <div v-if="item.type == 0">
-                                                <div class="desc" v-if="!item.isEdit">{{item.inputInfo}}</div>
-                                                <textarea class="desc" placeholder="请输入内容" cols="30" rows="10" v-if="item.isEdit"
-                                                          v-model="item.inputInfo"></textarea>
-                                            </div>
-                                            <div v-if="item.type == 10">
-                                                <div>
-                                                    <img src="" alt="" class="img" />
-                                                </div>
-                                                <div class="img-upload" role="button">
-                                                    <input type="file" v-model="item.inputInfo" />
-                                                    <span class="icon-add"></span>
-                                                    <span>请选择图片上传</span>
-                                                </div>
-                                            </div>
+                                            <div v-if="item.infoType == 1" class="title-l1">{{item.inputInfo}}</div>
+                                            <div v-if="item.infoType == 2" class="title-l2">{{item.inputInfo}}</div>
+                                            <div v-if="item.infoType == 0" class="desc">{{item.inputInfo}}</div>
+                                            <img v-if="item.infoType == 10" :src="item.filepath" alt="" class="img" />
                                             <div class="tool">
-                                                <span class="fa fa-floppy-o" v-on:click="save(item, index)" v-if="item.isEdit" role="button"></span>
-                                                <span class="fa fa-edit" v-on:click="item.isEdit = true" v-if="!item.isEdit" role="button"></span>
-                                                <span class="fa fa-trash" v-on:click="del(item, index)" role="button"></span>
-                                                <span class="fa fa-image" v-on:click="insert(index, 10)" role="button"></span>
-                                                <span class="fa fa-file-text-o" v-on:click="insert(index, 0)" role="button"></span>
-                                                <span class="fa" v-on:click="insert(index, 1)" role="button">H1</span>
-                                                <span class="fa" v-on:click="insert(index, 2)" role="button">H2</span>
+                                                <span class="fa fa-edit" role="button"
+                                                      v-on:click="modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&infoType=' +item.infoType+ '&orderBy='+(maxOrderBy+1))"></span>
+                                                <span class="fa fa-trash"
+                                                      v-on:click="del(item, index)" role="button"></span>
+                                                <span class="fa fa-image"
+                                                      v-on:click="modal_def('插入图片','page_add_info.html?call=page_add_info_end&infoType=10&orderBy='+(maxOrderBy+1))" role="button"></span>
+                                                <span class="fa fa-file-text-o"
+                                                      v-on:click="modal_def('添加内容','page_add_info.html?call=page_add_info_end&infoType=0&orderBy='+(maxOrderBy+1))" role="button"></span>
+                                                <span class="fa"
+                                                      v-on:click="modal_def('添加标题一','page_add_info.html?call=page_add_info_end&infoType=1&orderBy='+(maxOrderBy+1))" role="button">H1</span>
+                                                <span class="fa"
+                                                      v-on:click="modal_def('添加标题二','page_add_info.html?call=page_add_info_end&infoType=2&orderBy='+(maxOrderBy+1))" role="button">H2</span>
                                             </div>
                                         </div>
                                     </transition-group>
@@ -104,57 +98,69 @@
             el: '#vue-content',
             data: function() {
                 return {
-                    isEditTitle: false,
                     pageTitle: '页面标题',
-                    list: []
+                    list: [],
+                    deleteInfo: {deleteIndex: ''},
+                    minOrderBy: 0,  // 基于 orderBy
+                    maxOrderBy: 1   // 基于 orderBy
                 }
             },
             mounted: function() {
-                this.getContent();
+                ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, pageId: $.getUrlParam("pageId") });
             },
             methods: {
-                getContent: function() {
-                    ajax_user("pan_page_info_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, pageId: $.getUrlParam("pageId") });
-                },
-                save: function(item, index) {
-                    item.isEdit = false;
-                    ajax_user("pan_page_info_add", {callback: 'fun_add', btnfun: 'fun_load', showdata: 0 , pageId: $.getUrlParam("pageId"), infoType: item.type, info: item.inputInfo, orderBy: ''});
-                },
-                insert: function(index, type) {
-                    var self = this;
-                    self.list.splice(index+1, 0, {
-                        isEdit: true,
-                        type: type
-                    });
+                modal_def: function(title, url){  // 中转一下 modal_def 方法
+                    modal_def(title, url);
                 },
                 del: function(item, index) {
-                    var self = this;
-                    self.list.splice(index, 1);
-                    ajax_user("pan_page_info_del", {callback: 'fun_del', btnfun: 'fun_load', showdata: 0 , id: item.id});
-                },
-                onUpdate: function (event) {
-                    this.list.splice(event.newIndex, 0, this.list.splice(event.oldIndex, 1)[0])
+                    item.deleteIndex = index;
+                    this.deleteInfo = item;
+                    modal_mutual("提示","确定要删除吗？","call_fun_del","modal_box_hide");
                 }
             }
         });
-        function page_addend(result)
-        {
-            alert("添加完成！");
+        function page_addend(result){  //  添加新网页
+            modal_msg("添加完成");
         }
-        function fun_list(result) {
+        function fun_list(result) {  //  获取到内容列表
             vm.list = [];
-            var list = result.data.list.data;
-            for(var key in list) {
-                list[key].isEdit = false;
-                list[key].inputInfo = '';
+            vm.list = result.data.list.data;
+            for(var key in vm.list) {
+                vm.minOrderBy = Math.min(vm.minOrderBy, vm.list[key].orderBy);
+                vm.maxOrderBy = Math.max(vm.maxOrderBy, vm.list[key].orderBy);
             }
-            vm.list = list;
+            loading_hide();
         }
-        function fun_load(data) {
-            //alert("开始加载");
+        function fun_load(data) {  //  加载前
+            loading('正在加载中...');
         }
-        function fun_add(data) {}
-        function fun_del(data) {}
+        function call_fun_del(data) {  //  确定删除
+            ajax_user("pan_page_info_del", {callback: 'fun_del_end', btnfun: 'fun_load', showdata: 0 , id: vm.deleteInfo.id});
+        }
+        function fun_del_end(result) {  //  删除完成
+            if(result.status === 'ok') {
+                vm.list.splice(vm.deleteInfo.deleteIndex, 1);
+                vm.deleteInfo = {};
+                modal_msg('删除完成');
+            }else {
+                modal_msg(result.statusMsg);
+            }
+
+        }
+
+
+        function page_edit_pageTitle(data) {  //  编辑 页面标题 完成
+            vm.pageTitle = data.data.info.pageTitle;
+        }
+
+        function page_add_info_end(result) {  //  添加 图片、标题一、标题二、内容  完成
+            //  更新列表，  更新orderby
+        }
+
+
+        function page_edit_info_end(result) {//  编辑  图片、标题一、标题二、内容  完成
+
+        }
     </script>
 
     <!--#include virtual="/User/menu_button.html" -->

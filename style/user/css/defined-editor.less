@@ -9,12 +9,6 @@
   }
   .page-title, .area {
     position: relative;
-   // padding-bottom: 50px;
-    &:hover {
-      .tool {
-        display: inline-block;
-      }
-    }
   }
 
   .html-body {
@@ -48,10 +42,8 @@
     right: 0;
     bottom: 0;
     padding: 5px 15px;
-  //  background: #fff;
     z-index: 10;
     font-size: 20px;
-    display: none;
   }
   .fa {
     margin: 0 10px;
@@ -70,8 +62,14 @@
 
   .area {
     margin: 5px 0;
+    .tool {
+      display: none;
+    }
     &:hover {
       background: #e5e5e5;
+      .tool {
+        display: inline-block;
+      }
     }
     input[type="text"] {
       width: 100%;

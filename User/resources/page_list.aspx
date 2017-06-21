@@ -77,48 +77,46 @@
                    return {
                        loading: false,
                        list: {},
-                       page: 1 //  当前要请求第几页
+                       page: 1, //  当前要请求第几页
+                       deleteInfo: {}  //  当前要删除的网页 信息
                    }
                },
                mounted: function() {
-                   this.getList();
+                   ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
                },
                methods: {
                    setPage: function(page) {
                        if(!(page <= 0 || page > Math.ceil(this.list.total/this.list.prepage))) {
                            this.page = page;
-                           this.getList();
+                           ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
                        }
                    },
-                   getList: function() {
-                       ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
-                   },
                    del: function(index, item) {
-                       ajax_user("pan_page_del", { callback: 'fun_del', btnfun: 'fun_load', showdata: 0, id: item.id, pageType: 1 });
+                       this.deleteInfo = item;
+                       modal_mutual('提示','确定要删除 "'+item.pageTitle+'" 网页吗？',"cal_fun_del","modal_box_hide");
                    }
                }
             });
+
+            function cal_fun_del() {
+                ajax_user("pan_page_del", { callback: 'fun_del_success', btnfun: 'fun_load', showdata: 0, id: vm.deleteInfo.id, pageType: 1 });
+            }
+            function fun_del_success(result) {
+                modal_msg("删除成功",2, "");  // 刷新页面
+            }
             function fun_list(result) {
                 vm.list = {};
                 vm.list = result.data.list;
                 vm.loading = false;
+                loading_hide();
             }
             function fun_load(data) {
                 vm.loading = true;
+                loading("正在加载……");
             }
             function page_addend(result)
             {
-               alert("添加完成！");
-               setTimeout(function() {
-                   window.location.href = '/User/resources/page_view.aspx?pageId=' +result.data.pageId;
-               }, 1000);
-            }
-            function fun_del(result) {
-                vm.loading = false;
-                alert('删除成功');
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1000);
+                modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.id);
             }
         </script>
 
