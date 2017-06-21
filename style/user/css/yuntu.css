@@ -20,3 +20,6 @@
     margin-top:5px;
     text-align:center;
 }
+.btn-xs {  /*  重写被覆盖掉的样式  */
+    padding: 1px 5px;
+}

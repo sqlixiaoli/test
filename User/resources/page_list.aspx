@@ -29,7 +29,6 @@
                          <div class="box-header with-border">
                              <h3 class="box-title">网页列表</h3>
                              <div class="box-tools pull-right">
-                                 <a class="btn btn-success" href="page_view.aspx?pageId=0">网页内容页</a>
                                  <button type="button" class="btn btn-primary"
                                      onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加</button>
                              </div>
@@ -46,8 +45,8 @@
                                       <td>{{item.pageTitle}}</td>
                                       <td class="text-center">{{item.timeUp}}</td>
                                       <td class="text-center">
-                                          <a class="btn btn-info btn-sm" :href="'/User/resources/page_view.aspx?pageId=' + item.id">编辑</a>
-                                          <button type="button" class="btn btn-danger btn-sm" v-on:click="del(index, item)">刪除</button>
+                                          <a class="btn btn-info btn-xs btn-flat" :href="'page_view.aspx?pageId=' + item.id" style="margin-right: 10px;"><span class="fa fa-edit"></span></a>
+                                          <button type="button" class="btn btn-danger btn-xs btn-flat" v-on:click="del(index, item)"><span class="fa fa-trash"></span></button>
                                       </td>
                                   </tr>
                                   <tr v-if="(!list.data || list.data.length <= 0) && !loading"><td class="text-center">没有数据</td></tr>
@@ -120,7 +119,7 @@
             }
             function page_addend(result)
             {
-                modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.id);
+                modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.id);
             }
         </script>
 
