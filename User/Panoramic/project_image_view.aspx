@@ -174,6 +174,7 @@
 
             function set_info(_url)
             {
+                _url = url_time(_url);
                 $.swithView("op_setinfo", "op_main");
                 $("#op_setinfo").load(_url);
             }
@@ -186,12 +187,23 @@
                 kp.hotspot.title(_name, _title);
             }
 
-            function hotspot_set_scale(_name, _max) {
+            function hotspot_set_scale(_name, _max, _value) {
+                if (_value == null) _value = 0.1;
                 if (_max) {
-                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) + 0.1);
+                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) + _value);
                 }
                 else {
-                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) - 0.1);
+                    kp.hotspot.scale(_name, kp.hotspot.scale(_name) - _value);
+                }
+            }
+
+            function hotspot_set_rotate(_name, _max, _value) {
+                if (_value == null) _value = 1;
+                if (_max) {
+                    kp.hotspot.rotate(_name, kp.hotspot.rotate(_name) + _value);
+                }
+                else {
+                    kp.hotspot.rotate(_name, kp.hotspot.rotate(_name) - _value);
                 }
             }
 

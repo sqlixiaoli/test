@@ -1,6 +1,7 @@
 ﻿var modal_url = "";
 //通用
 function modal_lg(_title, _url) {
+    _url = url_time(_url);
     modal_url = _url;
     $('#modal_lg').modal('show')
     $('#modal_lg_title').html(_title)
@@ -11,6 +12,7 @@ function modal_lg_hide()
 
 
 function modal_sm(_title, _url) {
+    _url = url_time(_url);
     modal_url = _url;
     $('#modal_sm').modal('show')
     $('#modal_sm_title').html(_title)
@@ -20,6 +22,7 @@ function modal_sm_hide()
 { $('#modal_sm').modal('hide') }
 
 function modal_def(_title, _url) {
+    _url = url_time(_url);
     modal_url = _url;
     $('#modal_box').modal('show')
     $('#modal_box_title').html(_title)
@@ -28,6 +31,7 @@ function modal_def(_title, _url) {
 function modal_def_hide()
 { $('#modal_box').modal('hide') }
 function modal_box_hide() { modal_def_hide(); }
+
 
 function modal_url_pra(name) {
     return $.getUrlParam(name, modal_url);
@@ -43,6 +47,7 @@ function modal_hide() {
 
 function modal_msg(msg, time, url)
 {
+    url = url_time(url);
     if (time == null) { time = 1000; } else { time = time * 1000; }
     $('#modal_msg').modal({ backdrop: 'static', keyboard: false });
     $('#modal_msg').modal('show');   

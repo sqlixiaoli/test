@@ -1,7 +1,7 @@
 ﻿
 <div class="box-header">
     <i class="fa fa-edit"></i>
-    <h3 class="box-title">添加网页热点</h3>
+    <h3 class="box-title">添加贴图</h3>
 </div>
 
 
@@ -9,8 +9,26 @@
     <div class="form-group">
         <img onclick="tool_user_image_select('call_icon_hotspot_select',$('#project_id').val())" src="/File/icon/vtourskin_hotspot.png" id="hotspot_imgUrl_show" style="width:100%; margin:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer; " />
         <input type="hidden" id="hotspot_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
+        <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true,1)">放大+</button>
         <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
-        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
+        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>        
+        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false,1)">缩小+</button>
+    </div>
+    <div class="checkbox">
+        <button type="button" class="btn btn-primary" onclick="hotspot_set_rotate($('#hotspot_name').val(), true, 5)">旋转++</button>
+        <button type="button" class="btn btn-primary" onclick="hotspot_set_rotate($('#hotspot_name').val(), true)">旋转+</button>
+        <button type="button" class="btn btn-default" onclick="hotspot_set_rotate($('#hotspot_name').val(), false)">旋转-</button>
+        <button type="button" class="btn btn-default" onclick="hotspot_set_rotate($('#hotspot_name').val(), false, 5)">旋转--</button>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" checked="checked"  onchange="on_hotspot_checked_chang('zoom', this)">跟随缩放
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" onchange="on_hotspot_checked_chang('distorted', this)">跟随扭曲
+        </label>
     </div>
 </div>
 <!-- /.box-body -->
@@ -24,7 +42,7 @@
     fun_add_image();
     function fun_add_image() {
         var _name = "hotspot_" + Math.uuid(18, 16);
-        kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), "");
+        kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), null);
         $("#hotspot_name").val(_name);
         kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
@@ -82,6 +100,11 @@
         $('#hotspot_imgUrl').val(result.src);
         $('#hotspot_imgUrl_show').attr("src", result.src);
         kp.hotspot.url($("#hotspot_name").val(), result.src);
+    }
+
+    function on_hotspot_checked_chang(type, check)
+    {
+        kp.hotspot.set($("#hotspot_name").val(), type, $(check).is(':checked'));
     }
 
 </script>

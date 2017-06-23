@@ -10,6 +10,19 @@
     }
 })(jQuery);
 
+function url_time(_url)
+{
+    var _timekey = new Date().getTime();
+    if (_url.indexOf("?") >= 0) {
+        _url = _url + "&timekey=" + _timekey;
+    }
+    else {
+        _url = _url + "?timekey=" + _timekey;
+    }
+    return _url;
+}
+
+
 (function ($) {
     $.swithView = function (name1, name2) {
         document.getElementById(name1).style.display = "";
