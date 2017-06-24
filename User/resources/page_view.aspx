@@ -8,7 +8,11 @@
     <!--#include virtual="/User/head.html" -->
 
     <link rel="stylesheet" href="../../style/user/css/defined-editor.css">
-
+<style>
+.main-header, .main-sidebar {
+display: none !important;
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -19,9 +23,9 @@
 
 
     <div class="content-wrapper">
-        <section class="content-header">
+       <!-- <section class="content-header">
             <h1>网页管理<small>0</small></h1>
-        </section>
+        </section>-->
         <section class="content" id="vue-content">
             <div class="row">
                 <!-- 内容列表 pan_page_info_list -->
@@ -33,7 +37,7 @@
                     <div class="box box-info">
                         <div class="box-header with-border clearfix">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary" onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加网页</button>
+                                <button type="button" class="btn btn-primary" onclick="modal_def('添加网页','page_add.html')">添加网页</button>
                             </div>
                         </div>
                         <div class="box-body editor-content">
@@ -53,7 +57,7 @@
                                 </div>
                             </header>
                             <article class="html-body">
-                                <draggable :list="list">
+                                <draggable :list="list" @end="end()">
                                     <transition-group name="list-complete">
                                         <div class="area" v-for="(item, index) in list" :key="index" v-if="list.length > 0" :id="item.id">
                                             <div v-if="item.infoType == 1" class="title-l1">{{item.info}}</div>
@@ -62,7 +66,7 @@
                                             <div class="img"><img v-if="item.infoType == 10" :src="item.info" alt="" /></div>
                                             <div class="tool">
                                                 <span class="fa fa-edit" role="button"
-                                                      v-on:click="editIndex=index;modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&id='+item.id+'&info='+item.info+'&infoType=' +item.infoType+ '&orderBy='+(item.orderBy+1))"></span>
+                                                      v-on:click="editIndex=index;modal_def('修改', 'page_edit_info.html?call=page_edit_info_end&info='+item.info+'&id='+item.id+'&infoType='+item.infoType+'&orderBy='+(item.orderBy+1))"></span>
                                                 <span class="fa fa-trash"
                                                       v-on:click="del(item, index)" role="button"></span>
                                                 <span class="fa fa-image"
@@ -112,12 +116,28 @@
                     item.deleteIndex = index;
                     this.deleteInfo = item;
                     modal_mutual("提示","确定要删除吗？","call_fun_del","modal_box_hide");
+                },
+                end: function() {  //  批量排序
+                    var id = [], orderBy = [];
+                    for(var i=0, len=this.list.length; i<len; i++) {
+                        this.list[i].orderBy = i;
+                        id.push(this.list[i].id);
+                        orderBy.push(this.list[i].orderBy);
+                    }
+                    this.minOrderBy = 0;
+                    ajax_user("pan_page_info_order", {
+                        callback: 'fun_order',
+                        showdata: 0,
+                        pageId: $.getUrlParam("pageId"),
+                        id: id.join(','),
+                        orderBy: orderBy.join(',')
+                    });
                 }
             }
         });
-        function page_addend(result){  //  添加新网页
-          modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.id);
-        }
+      //  function page_addend(result){  //  添加新网页
+      //    modal_msg("添加完成",2, "/User/resources/page_view.aspx?pageId=" +result.data.info.id);
+      //  }
         function fun_page_get(result) {
             if(result.status === 'OK' || result.status === 'ok') {
                 vm.pageTitle = result.data.info.pageTitle;
@@ -135,10 +155,10 @@
             }
             loading_hide();
         }
-        function fun_load(data) {  //  加载前
+        function fun_load(result) {  //  加载前
             loading('正在加载中...');
         }
-        function call_fun_del(data) {  //  确定删除
+        function call_fun_del(result) {  //  确定删除
             ajax_user("pan_page_info_del", {callback: 'fun_del_end', btnfun: 'fun_load', showdata: 0 , id: vm.deleteInfo.id});
         }
         function fun_del_end(result) {  //  删除完成
@@ -151,13 +171,10 @@
                 modal_msg(result.statusMsg);
             }
         }
-
-        function page_edit_pageTitle(data) {  //  编辑 页面标题 完成
-            vm.pageTitle = data.data.info.pageTitle;
+        function page_edit_pageTitle(result) {  //  编辑 页面标题 完成
+            vm.pageTitle = result.data.info.pageTitle;
         }
-
         function page_add_info_end(result) {  //  添加 内容  完成
-            //  更新列表，  更新orderby
             if(result.status.toString().toLocaleLowerCase() === 'ok') {
                 vm.list.splice(vm.insertIndex+1, 0, result.data.info);
                 vm.minOrderBy = Math.min(vm.minOrderBy, result.data.info.orderBy);
@@ -165,9 +182,7 @@
             vm.insertIndex = '';
             loading_hide();
         }
-
         function page_edit_info_end(result) {//  编辑  内容  完成
-          //  更新列表
             if(result.status.toString().toLocaleLowerCase() === 'ok') {
               var item = vm.list[vm.editIndex];
               item.info = result.data.newInfo;
@@ -175,6 +190,11 @@
             }
             vm.editIndex = '';
             loading_hide();
+        }
+        function fun_order(result) { //  排序完成
+             if(result.status.toString().toLocaleLowerCase() !== 'ok') {
+                 modal_msg(result.statusMsg);
+             }
         }
     </script>
 

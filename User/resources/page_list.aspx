@@ -30,7 +30,7 @@
                              <h3 class="box-title">网页列表</h3>
                              <div class="box-tools pull-right">
                                  <button type="button" class="btn btn-primary"
-                                     onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加</button>
+                                     onclick="modal_def('添加网页','page_add.html')">添加</button>
                              </div>
                          </div>
                          <div class="box-body">
@@ -117,10 +117,10 @@
                 vm.loading = true;
                 loading("正在加载……");
             }
-            function page_addend(result)
-            {
-                modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.id);
-            }
+          //  function page_addend(result)
+          //  {
+             //   modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.info.id);
+          //  }
         </script>
 
         <!--#include virtual="/User/menu_button.html" -->

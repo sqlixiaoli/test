@@ -56,6 +56,7 @@
     $form.find('input[name="id"]').val(modal_url_pra("id"));
     $form.find('input[name="infoType"]').val(modal_url_pra('infoType'));
     $form.find('input[name="orderBy"]').val(modal_url_pra('orderBy'));
+
     switch(parseInt(modal_url_pra('infoType'))) {
         case 0:
             $('#pan_page_content').removeClass('hidden').siblings('.form-group').remove();
@@ -71,13 +72,13 @@
             break;
         default:break;
     }
-    $form.find('input[name="info"]').val(modal_url_pra('info'));
+    $form.find('[name="info"]').val(modal_url_pra('info'));
 
     function fun_page_add(result) {
         if(result.status.toString().toLocaleLowerCase() === 'ok') {
             modal_box_hide();
             modal_msg("编辑完成");
-            result.data.newInfo = $form.find('input[name="info"]').val();
+            result.data.newInfo = $form.find('[name="info"]').val();
             setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
         }else {
             modal_msg(result.statusMsg);
