@@ -42,7 +42,7 @@
                                       <th class="text-center" width="180">操作</th>
                                   </tr>
                                   <tr v-if="!!list.data && list.data.length > 0 && !loading" v-for="(item, index) in list.data">
-                                      <td>{{item.pageTitle}}</td>
+                                      <td><a :href="'/page_'+item.uuid+'.html'" target="_blank">{{item.pageTitle}}</a></td>
                                       <td class="text-center">{{item.timeUp}}</td>
                                       <td class="text-center">
                                           <a class="btn btn-info btn-xs btn-flat" :href="'page_view.aspx?pageId=' + item.id" style="margin-right: 10px;"><span class="fa fa-edit"></span></a>
