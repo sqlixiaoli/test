@@ -73,7 +73,7 @@
     }
 
     function fun_page_add(result) {
-        if(result.status === 'ok') {
+        if(result.status.toString().toLocaleLowerCase() === 'ok') {
             modal_msg("添加完成");
             setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
             modal_box_hide();

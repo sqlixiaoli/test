@@ -32,8 +32,8 @@
         //});  
         //alert(modal_url_pra("call"));
         modal_box_hide();       
-        setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
-        
+     //   setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
+        modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.info.id);
     }
 
     function fun_page_load(data) {

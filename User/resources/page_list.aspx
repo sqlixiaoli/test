@@ -30,7 +30,7 @@
                              <h3 class="box-title">网页列表</h3>
                              <div class="box-tools pull-right">
                                  <button type="button" class="btn btn-primary"
-                                     onclick="modal_def('添加网页','page_add.html?call=page_addend')">添加</button>
+                                     onclick="modal_def('添加网页','page_add.html')">添加</button>
                              </div>
                          </div>
                          <div class="box-body">
@@ -42,7 +42,7 @@
                                       <th class="text-center" width="180">操作</th>
                                   </tr>
                                   <tr v-if="!!list.data && list.data.length > 0 && !loading" v-for="(item, index) in list.data">
-                                      <td>{{item.pageTitle}}</td>
+                                      <td><a :href="'/page_'+item.uuid+'.html'" target="_blank">{{item.pageTitle}}</a></td>
                                       <td class="text-center">{{item.timeUp}}</td>
                                       <td class="text-center">
                                           <a class="btn btn-info btn-xs btn-flat" :href="'page_view.aspx?pageId=' + item.id" style="margin-right: 10px;"><span class="fa fa-edit"></span></a>
@@ -117,10 +117,10 @@
                 vm.loading = true;
                 loading("正在加载……");
             }
-            function page_addend(result)
-            {
-                modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.id);
-            }
+          //  function page_addend(result)
+          //  {
+             //   modal_msg("添加完成",2, "page_view.aspx?pageId=" +result.data.info.id);
+          //  }
         </script>
 
         <!--#include virtual="/User/menu_button.html" -->
