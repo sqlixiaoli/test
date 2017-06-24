@@ -98,7 +98,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">项目名称：</label>
                                     <p class="col-sm-10 control-label" style="text-align: left">
-                                        <a :href="'/PAN/index.aspx?id='+info.id" target="_blank">{{info.projectName}}</a>                       
+                                        <a :href="'/pan/'+info.uuid+'.html'" target="_blank">{{info.projectName}}</a>                       
                                             <button type="button" @click="editProjectName(info.projectName)" class="btn btn-box-tool"><i class="fa fa-edit"></i></button>
                                     
                                     </p>

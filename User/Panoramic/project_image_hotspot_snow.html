@@ -1,0 +1,73 @@
+﻿
+<div class="box-header">
+    <i class="fa fa-edit"></i>
+    <h3 class="box-title">动画特效管理</h3>
+</div>
+
+
+<div class="box-body">
+    <div id="snow_add" style="display:none">
+        <button type="button" class="btn btn-block btn-primary btn-lg" onclick="tool_snow_select('on_add_snow')">添加</button>
+    </div>
+    <div id="snow_edit" style="display:none">
+        <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_del_snow()">删除</button>
+    </div>
+</div>
+
+
+<!-- /.box-body -->
+
+<div class="box-footer">
+    <button type="button" class="btn btn-default pull-right" onclick="set_info_close()">返回</button>
+</div>
+
+<script>
+    ajax_user("image_snow_get", { callback: 'fun_snowInfo', btnfun: 'loading', showdata: 0, imageId: $.getUrlParam("id") });
+    var _id = 0;
+    function fun_snowInfo(result)
+    {
+        loading_hide();
+        _id = result.data.info.id;
+        if (_id > 0)
+        {
+            $("#snow_add").hide();
+            $("#snow_edit").show();
+        }
+        else
+        {
+            $("#snow_edit").hide();
+            $("#snow_add").show();
+        }       
+    }
+
+    function on_del_snow()
+    {
+        modal_mutual("删除提醒", "确定要删除当前特效吗？", function () {
+            ajax_user("image_snow_del", {
+                callback: 'fun_del',
+                btnfun: 'loading',
+                showdata: 0,
+                id: _id
+            });
+        });
+    }
+
+    function fun_del(result)
+    {
+        loading_hide();
+        modal_msg("删除成功", 1, "");
+    }
+
+
+    function on_add_snow(obj)
+    {
+        ajax_user("image_snow_add", { callback: 'fun_add', btnfun: 'loading', showdata: 0, imageId: $.getUrlParam("id"), snowName: obj.snowName, snowTitle: obj.snowTitle });       
+    }
+
+    function fun_add(result)
+    {
+        loading_hide();
+        modal_msg("添加成功",1,"");
+    }
+
+</script>

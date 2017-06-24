@@ -46,7 +46,13 @@
         $.swithView("op_scene_edit", "op_main");
         var _name = $("#hotspot_name").val();
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
-        $("#hotspot_edit_title").val(kp.hotspot.gettitle(_name));
+
+        $('#hotspot_edit_title').val(get_hotspotData("hotspotTitle", _name));
+        if (get_hotspotData("hotspotTitleView", _name) == "true")
+        { $("#hotspot_TitleView").attr("checked", true); }
+        else
+        { $("#hotspot_TitleView").attr("checked", false); }
+
         $('#hotspot_edit_imgUrl').val(kp.hotspot.url(_name));
         $('#hotspot_edit_imgUrl_show').attr("src", kp.hotspot.url(_name));
         kp.hotspot.editonclick($("#hotspot_list").val().split(","));
@@ -77,6 +83,7 @@
     }
     function fun_hotspot_edit(result) {
         $.swithView("op_main", "op_scene_edit");
+        set_hotspotlist(result.data.hotspot.data);
         loading_hide();        
         modal_msg("编辑成功");
 

@@ -1,0 +1,28 @@
+﻿<div id="snow_box">
+
+    <div class="icon_select_item" v-for="item in list.data">
+        <p :onclick="'fun_select_item(\'' + item.snowName + '\',\'' + item.snowTitle + '\')'"  class="widget-user-desc">{{item.snowTitle}}</p>
+    </div>
+
+
+    <div style="clear:both"></div>
+</div>
+
+<script>
+    ajax_user("resources_snow_list", { callback: 'fun_snow_list', showdata: 0});
+    function fun_snow_list(result) {
+        var vm = new Vue({
+            el: "#snow_box",
+            data: result.data
+        });
+    }
+
+    function fun_select_item(_snowname, _snowtitle)
+    {
+        var _data = new Object();
+        _data = { snowName: _snowname, snowTitle: _snowtitle };
+        modal_hide();
+        setTimeout(function () { var a = eval(modal_url_pra("call")); a(_data); }, 10);
+    }
+
+</script>
