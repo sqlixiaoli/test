@@ -8,11 +8,6 @@
     <!--#include virtual="/User/head.html" -->
 
     <link rel="stylesheet" href="../../style/user/css/defined-editor.css">
-<style>
-.main-header, .main-sidebar {
-display: none !important;
-}
-</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
@@ -23,9 +18,9 @@ display: none !important;
 
 
     <div class="content-wrapper">
-       <!-- <section class="content-header">
+        <section class="content-header">
             <h1>网页管理<small>0</small></h1>
-        </section>-->
+        </section>
         <section class="content" id="vue-content">
             <div class="row">
                 <!-- 内容列表 pan_page_info_list -->
