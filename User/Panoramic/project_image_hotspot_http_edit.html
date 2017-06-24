@@ -1,31 +1,25 @@
 ﻿
 <div class="box-header">
     <i class="fa fa-edit"></i>
-    <h3 class="box-title">添加网页热点</h3>
+    <h3 class="box-title">编辑外链接热点</h3>
 </div>
 
 
 <div class="box-body">
 
     <div class="form-group">
-        <label>资源类型</label>
-        <select class="form-control" id="select_resource" onchange="on_select_resource_chang()">            
-            <option v-for="item in list.data" value="1">我的资源库</option>
-            <option v-for="item in list.data" value="2">项目资源库</option>
-            <option v-for="item in list.data" value="0">系统资源库</option>
-        </select>
+        <label>网址</label>
+        <input class="form-control" id="hotspot_http" type="text">
     </div>   
-
-    <div class="form-group">
-        <label>选择网页</label>
-        <select class="form-control" id="select_page" onchange="on_select_page_chang()">
-            <option v-for="item in list.data" :value="item.uuid">{{item.pageTitle}}</option>
-        </select>
-    </div> 
-
     <div class="form-group">
         <label>热点标题</label>
         <input class="form-control" id="hotspot_title" type="text">
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" id="hotspot_HttpView" onchange="on_hotspot_http_view_chang()"> 重定向网页
+        </label>
     </div>
 
     <div class="checkbox">
@@ -41,6 +35,9 @@
         <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
         <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
     </div>
+
+    <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_del_hotspot()">删除</button>
+
 </div>
 <!-- /.box-body -->
 
@@ -50,58 +47,63 @@
 </div>
 
 <script>
-    on_select_resource_chang();
-    function on_select_resource_chang()
-    { ajax_user("pan_page_list", { callback: 'fun_pagelist', btnfun: 'loading', showdata: 0, pageType: $("#select_resource").val(), projectId: $("#project_id").val() }); }
+    var _hotspotAth = 0;
+    var _hotspotAtv = 0;
 
-    var vm = new Vue({
-        el: "#select_page",
-        data: function () {
-            return {
-                list: {}
-            }
-        }
-    });
-    function fun_pagelist(result)
+    fun_edithttp();
+    function fun_edithttp()
     {
-        vm.list = {};
-        vm.list = result.data.list;
-
-        on_select_page_chang();   
-
-
-        var _name = "hotspot_" + Math.uuid(18, 16);
-        var _title = $('#hotspot_title').val();
-        kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), _title);
-        $("#hotspot_name").val(_name);
+        var _name = $("#hotspot_name").val();
 
         kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","));
         kp.hotspot.editondown($("#hotspot_list").val().split(","));
-        
+        kp.hotspot.editondown([_name], "drag_hotspot");
+
+        $('#hotspot_imgUrl').val(kp.hotspot.url(_name));
+        $('#hotspot_imgUrl_show').attr("src", kp.hotspot.url(_name));
+        $('#hotspot_title').val(get_hotspotData("hotspotTitle", _name));
+        $('#hotspot_http').val(get_hotspotData("hotspotData", _name));
+
+        var _hotspotTarget = get_hotspotData("hotspotTarget", _name);
+        if (_hotspotTarget == "top") { $("#hotspot_HttpView").attr("checked", true); }
+
+
+        if (get_hotspotData("hotspotTitleView", _name) == "true")
+        { $("#hotspot_TitleView").attr("checked", true); }
+        else
+        { $("#hotspot_TitleView").attr("checked", false); }
+
+
+        _hotspotAtv = kp.hotspot.atv(_name);
+        _hotspotAth = kp.hotspot.ath(_name);
+
+
         loading_hide();
     }
    
     function on_hotspot_save()
     {
         var name = $("#hotspot_name").val();
+        var hotspotId = get_hotspotId(name);
 
-        ajax_user("pan_hotspot_add", {
+        var _target = "iframe";
+        if ($('#hotspot_HttpView').is(':checked')) { _target = "top"; }
+
+        ajax_user("pan_hotspot_edit", {
             callback: 'pan_hotspot_save',
             btnfun: 'loading',
             showdata: 0,
-            imageId: $.getUrlParam("id"),
-            hotspotName: name,
-            hotspotType: 3,
-            hotspotKee: 0,
+            id: hotspotId,
             imgUrl: kp.hotspot.url(name),
             hotspotAth: kp.hotspot.ath(name),
             hotspotAtv: kp.hotspot.atv(name),
             hotspotScale: kp.hotspot.scale(name),
             hotspotTitle: $("#hotspot_title").val(),
-            hotspotTitleView: $("#hotspot_TitleView").val(),
-            hotspotData: $("#select_page").val(),
+            hotspotTitleView:$('#hotspot_TitleView').is(':checked'),
+            hotspotData: $("#hotspot_http").val(),
+            hotspotTarget: _target,
             hotspotRotate: kp.hotspot.rotate(name)
         });
     }
@@ -109,6 +111,7 @@
     function pan_hotspot_save(result)
     {
         set_hotspotlist(result.data.hotspot.data);
+
         loading_hide();
 
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
@@ -116,25 +119,24 @@
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
         kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
 
-        modal_msg("添加成功");
+        modal_msg("编辑成功");
 
         set_info_close();
     }
 
     function on_hotspot_cancel() {        
-        kp.hotspot.visible($("#hotspot_name").val(), false);
+        var _name = $("#hotspot_name").val();
+
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
         kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
         set_info_close();
+
+        kp.hotspot.atv(_name, _hotspotAtv);
+        kp.hotspot.ath(_name, _hotspotAth);
     }
 
-    function on_select_page_chang()
-    {
-        $('#hotspot_title').val($("#select_page").find("option:selected").text());
-        on_hotspot_title_chang();
-    }
 
     $('#hotspot_title').on("input", function (e) { on_hotspot_title_chang(); });
     function on_hotspot_title_chang() {
@@ -150,6 +152,33 @@
         $('#hotspot_imgUrl').val(result.src);
         $('#hotspot_imgUrl_show').attr("src", result.src);
         kp.hotspot.url($("#hotspot_name").val(), result.src);
+    }
+
+    function on_del_hotspot() {
+        modal_mutual("删除提醒", "确定要删除当前热点吗？", function () {
+
+            var hotspotId = get_hotspotId($("#hotspot_name").val());
+            ajax_user("pan_hotspot_del", {
+                callback: 'fun_del_hotspot_image',
+                btnfun: 'fun_load',
+                showdata: 0,
+                id: hotspotId
+            });
+        });
+    }
+
+    function fun_del_hotspot_image(result) {
+        set_info_close();
+        loading_hide();
+        set_hotspotlist(result.data.hotspot.data);
+        kp.hotspot.visible($("#hotspot_name").val(), false);
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
+
+        modal_msg("删除成功");
     }
 
 </script>

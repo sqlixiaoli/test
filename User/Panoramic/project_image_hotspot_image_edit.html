@@ -1,7 +1,7 @@
 ﻿
 <div class="box-header">
     <i class="fa fa-edit"></i>
-    <h3 class="box-title">添加贴图</h3>
+    <h3 class="box-title">编辑贴图</h3>
 </div>
 
 
@@ -22,14 +22,17 @@
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" value="1" checked="checked"  onchange="on_hotspot_checked_chang('zoom', this)">跟随缩放
+            <input type="checkbox" value="1" id="hotspot_check_zoom" checked="checked"  onchange="on_hotspot_checked_chang('zoom', this)">跟随缩放
         </label>
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" value="1" onchange="on_hotspot_checked_chang('distorted', this)">跟随扭曲
+            <input type="checkbox" value="1" id="hotspot_check_distorted" onchange="on_hotspot_checked_chang('distorted', this)">跟随扭曲
         </label>
     </div>
+
+    <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_del_hotspot()">删除</button>
+
 </div>
 <!-- /.box-body -->
 
@@ -39,37 +42,43 @@
 </div>
 
 <script>
-    fun_add_image();
-    function fun_add_image() {
-        var _name = "hotspot_" + Math.uuid(18, 16);
-        kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), null);
-        $("#hotspot_name").val(_name);
+    var _hotspotAth = 0;
+    var _hotspotAtv = 0;
+    fun_get_image();
+    function fun_get_image() {
+        var _name = $("#hotspot_name").val();
+        
         kp.hotspot.aggravated($("#hotspot_list").val().split(","), _name);
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","));
         kp.hotspot.editondown($("#hotspot_list").val().split(","));
-        kp.hotspot.systype($("#hotspot_name").val(), 1);
+        kp.hotspot.editondown([_name], "drag_hotspot");
+
+
+        $('#hotspot_imgUrl').val(kp.hotspot.url(_name));
+        $('#hotspot_imgUrl_show').attr("src", kp.hotspot.url(_name));
+
+        $("#hotspot_check_zoom").attr("checked", kp.hotspot.zoom(_name));
+        $("#hotspot_check_distorted").attr("checked", kp.hotspot.distorted(_name));
+
+        _hotspotAtv = kp.hotspot.atv(_name);
+        _hotspotAth = kp.hotspot.ath(_name);
     }
 
     function on_hotspot_save() {
         var name = $("#hotspot_name").val();
-
-        ajax_user("pan_hotspot_add", {
+        var hotspotId = get_hotspotId(name);
+        ajax_user("pan_hotspot_edit", {
             callback: 'pan_hotspot_save',
             btnfun: 'loading',
             showdata: 0,
-            imageId: $.getUrlParam("id"),
-            hotspotName: name,
-            hotspotType:1,
-            hotspotKee: 0,
+            id: hotspotId,
             imgUrl: kp.hotspot.url(name),
             hotspotAth: kp.hotspot.ath(name),
             hotspotAtv: kp.hotspot.atv(name),
             hotspotScale: kp.hotspot.scale(name),
             hotspotZoom: kp.hotspot.zoom(name),
-            hotspotDistorted: kp.hotspot.distorted(name),
-            hotspotTitle: "",
-            hotspotTitleView: 0,
+            hotspotDistorted: kp.hotspot.distorted(name),         
             hotspotData: $("#hotspot_imgUrl").val(),
             hotspotRotate: kp.hotspot.rotate(name)
         });
@@ -77,6 +86,7 @@
 
     function pan_hotspot_save(result) {
         set_hotspotlist(result.data.hotspot.data);
+
         loading_hide();
 
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
@@ -84,17 +94,21 @@
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
         kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
 
-        modal_msg("添加成功");
+        modal_msg("编辑成功");
         set_info_close();
     }
 
     function on_hotspot_cancel() {
-        kp.hotspot.visible($("#hotspot_name").val(), false);
+        var _name = $("#hotspot_name").val();
+
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
         kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
         set_info_close();
+
+        kp.hotspot.atv(_name, _hotspotAtv);
+        kp.hotspot.ath(_name, _hotspotAth);
     }
 
     function call_icon_hotspot_select(result) {
@@ -106,6 +120,33 @@
     function on_hotspot_checked_chang(type, check)
     {
         kp.hotspot.set($("#hotspot_name").val(), type, $(check).is(':checked'));
+    }
+
+    function on_del_hotspot() {
+        modal_mutual("删除提醒", "确定要删除当前贴图吗？", function () {
+
+            var hotspotId = get_hotspotId($("#hotspot_name").val());
+            ajax_user("pan_hotspot_del", {
+                callback: 'fun_del_hotspot_image',
+                btnfun: 'fun_load',
+                showdata: 0,
+                id: hotspotId
+            });
+        });
+    }
+
+    function fun_del_hotspot_image(result) {
+        set_info_close();
+        loading_hide();
+        set_hotspotlist(result.data.hotspot.data);
+        kp.hotspot.visible($("#hotspot_name").val(), false);
+
+        kp.hotspot.aggravated($("#hotspot_list").val().split(","));
+        kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
+        kp.hotspot.editonclick($("#hotspot_list").val().split(","), "call_hotspot");
+        kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
+
+        modal_msg("删除成功");
     }
 
 </script>

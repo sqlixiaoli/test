@@ -45,9 +45,10 @@
                               <div class="box-body pad table-responsive">
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_scene_now_address()">设置为初始位置</button>
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="on_pan_scene_add_hotspot()">添加场景跳转</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_page_add.html')">添加网页热点</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_page_add.html')">添加资源网页热点</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_http_add.html')">添加外链接热点</button>
                                   <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_image_add.html')">添加贴图</button>
-                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="">添加动画特效</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg" onclick="set_info('project_image_hotspot_snow.html')">动画特效管理</button>
                               </div>
                              
                              </div>
@@ -59,12 +60,12 @@
                         <!--#include virtual="project_image_hotspot_scene_add.html" -->
                         <!--#include virtual="project_image_hotspot_scene_edit.html" -->
 
-                        <div style="display:none">
+                        <div  style="display:none">
                                  <input type="input" id="scene_h" value="0" />
                                   <input type="input" id="scene_v" value="0" />
                                   <input type="input" id="scene_f" value="0" />
                                   <input type="input" id="hotspot_name" value="" />
-                                  <input type="input" id="hotspot_title" value="" />
+                                  <input type="input" id="hotspot_type" value="" />
                                   <input type="input" id="hotspot_toscenename" value="" />
                                   <input type="input" id="hotspot_list" value="" />
                                   <input type="input" id="project_id" value="0" />
@@ -143,7 +144,20 @@
 
             function pan_scene_hotspot_status(_name) {
                 $("#hotspot_name").val(_name);
-                on_pan_scene_edit_hotspot();
+
+                var _type = kp.hotspot.systype($("#hotspot_name").val());
+                
+                if (_type == 1)
+                {
+                    set_info('project_image_hotspot_image_edit.html');
+                }
+                else if (_type == 4) {
+                    set_info('project_image_hotspot_http_edit.html');
+                }
+                else
+                {
+                    on_pan_scene_edit_hotspot();
+                }
             }
 
             function set_hotspotlist(list)
@@ -158,10 +172,11 @@
                 });
                 $("#hotspot_list").val(_hotspot_list);
             }
-            function get_hotspotId(name)
-            {
-                var hotspotId = 0;
+            
+            //通用函数
 
+            function get_hotspotId(name) {
+                var hotspotId = 0;
                 $.each(hotspotlist, function (i, skey) {
                     if (skey.hotspotName.toLowerCase() == name) {
                         hotspotId = skey.id;
@@ -170,15 +185,27 @@
                 return hotspotId;
             }
 
-            //通用函数
+            function get_hotspotData(_type,name) {
+                var _reuturn = null;
+                $.each(hotspotlist, function (i, skey) {
+                    if (skey.hotspotName.toLowerCase() == name.toLowerCase()) {
+                        if (_type == "id") { _reuturn = skey.id }
+                        else if (_type == "hotspotTarget") { _reuturn = skey.hotspotTarget }
+                        else if (_type == "hotspotTitleView") { _reuturn = skey.hotspotTitleView }
+                        else if (_type == "hotspotData") { _reuturn = skey.hotspotData }
+                        else if (_type == "hotspotTitle") { _reuturn = skey.hotspotTitle }
+                    }
+                });
+                return _reuturn;
+            }
 
             function set_info(_url)
-            {
+            {                
                 _url = url_time(_url);
                 $.swithView("op_setinfo", "op_main");
                 $("#op_setinfo").load(_url);
             }
-            function set_info_close() {
+            function set_info_close() {                
                 $.swithView("op_main", "op_setinfo");
             }
 

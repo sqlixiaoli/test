@@ -1,34 +1,39 @@
 ﻿
 <div class="box-header">
     <i class="fa fa-edit"></i>
-    <h3 class="box-title">添加贴图</h3>
+    <h3 class="box-title">添加外链接热点</h3>
 </div>
 
 
 <div class="box-body">
+
     <div class="form-group">
-        <img onclick="tool_user_image_select('call_icon_hotspot_select',$('#project_id').val())" src="/File/icon/vtourskin_hotspot.png" id="hotspot_imgUrl_show" style="width:100%; margin:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer; " />
+        <label>网址</label>
+        <input class="form-control" id="hotspot_http" type="text">
+    </div>   
+    <div class="form-group">
+        <label>热点标题</label>
+        <input class="form-control" id="hotspot_title" type="text">
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" id="hotspot_HttpView" onchange="on_hotspot_http_view_chang()"> 重定向网页
+        </label>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="1" checked="checked" id="hotspot_TitleView" onchange="on_hotspot_title_chang()"> 是否显示热点标题
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">热点图标</label>
+        <img onclick="tool_icon_select('call_icon_hotspot_select')" src="/File/icon/vtourskin_hotspot.png" id="hotspot_imgUrl_show" style="width:35px; height:35px; margin-left:10px; margin-right:10px; border:1px #ebebeb solid; padding:1px; cursor:pointer" />
         <input type="hidden" id="hotspot_imgUrl" value="/File/icon/vtourskin_hotspot.png" />
-        <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true,1)">放大+</button>
         <button type="button" class="btn btn-primary" onclick="hotspot_set_scale($('#hotspot_name').val(), true)">放大</button>
-        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>        
-        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false,1)">缩小+</button>
-    </div>
-    <div class="checkbox">
-        <button type="button" class="btn btn-primary" onclick="hotspot_set_rotate($('#hotspot_name').val(), true, 5)">旋转++</button>
-        <button type="button" class="btn btn-primary" onclick="hotspot_set_rotate($('#hotspot_name').val(), true)">旋转+</button>
-        <button type="button" class="btn btn-default" onclick="hotspot_set_rotate($('#hotspot_name').val(), false)">旋转-</button>
-        <button type="button" class="btn btn-default" onclick="hotspot_set_rotate($('#hotspot_name').val(), false, 5)">旋转--</button>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="1" checked="checked"  onchange="on_hotspot_checked_chang('zoom', this)">跟随缩放
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="1" onchange="on_hotspot_checked_chang('distorted', this)">跟随扭曲
-        </label>
+        <button type="button" class="btn btn-default" onclick="hotspot_set_scale($('#hotspot_name').val(),false)">缩小</button>
     </div>
 </div>
 <!-- /.box-body -->
@@ -39,8 +44,9 @@
 </div>
 
 <script>
-    fun_add_image();
-    function fun_add_image() {
+    fun_addhttp();
+    function fun_addhttp()
+    {
         var _name = "hotspot_" + Math.uuid(18, 16);
         kp.hotspot.add(_name, $("#hotspot_imgUrl").val(), $("#scene_h").val(), $("#scene_v").val(), null);
         $("#hotspot_name").val(_name);
@@ -48,11 +54,15 @@
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), false, _name);
         kp.hotspot.editonclick($("#hotspot_list").val().split(","));
         kp.hotspot.editondown($("#hotspot_list").val().split(","));
-        kp.hotspot.systype($("#hotspot_name").val(), 1);
+        kp.hotspot.systype($("#hotspot_name").val(), 4);
+        loading_hide();
     }
-
-    function on_hotspot_save() {
+   
+    function on_hotspot_save()
+    {
         var name = $("#hotspot_name").val();
+        var _target = "iframe";
+        if ($('#hotspot_HttpView').is(':checked')) { _target = "top"; }
 
         ajax_user("pan_hotspot_add", {
             callback: 'pan_hotspot_save',
@@ -60,22 +70,22 @@
             showdata: 0,
             imageId: $.getUrlParam("id"),
             hotspotName: name,
-            hotspotType:1,
+            hotspotType: 4,
             hotspotKee: 0,
             imgUrl: kp.hotspot.url(name),
             hotspotAth: kp.hotspot.ath(name),
             hotspotAtv: kp.hotspot.atv(name),
             hotspotScale: kp.hotspot.scale(name),
-            hotspotZoom: kp.hotspot.zoom(name),
-            hotspotDistorted: kp.hotspot.distorted(name),
-            hotspotTitle: "",
-            hotspotTitleView: 0,
-            hotspotData: $("#hotspot_imgUrl").val(),
+            hotspotTitle: $("#hotspot_title").val(),
+            hotspotTitleView: $("#hotspot_TitleView").val(),
+            hotspotData: $("#hotspot_http").val(),
+            hotspotTarget: _target,
             hotspotRotate: kp.hotspot.rotate(name)
         });
     }
 
-    function pan_hotspot_save(result) {
+    function pan_hotspot_save(result)
+    {
         set_hotspotlist(result.data.hotspot.data);
         loading_hide();
 
@@ -85,10 +95,11 @@
         kp.hotspot.editondown($("#hotspot_list").val().split(","), "");
 
         modal_msg("添加成功");
+
         set_info_close();
     }
 
-    function on_hotspot_cancel() {
+    function on_hotspot_cancel() {        
         kp.hotspot.visible($("#hotspot_name").val(), false);
         kp.hotspot.aggravated($("#hotspot_list").val().split(","));
         kp.hotspot.edithandcursor($("#hotspot_list").val().split(","), true);
@@ -97,15 +108,21 @@
         set_info_close();
     }
 
+
+    $('#hotspot_title').on("input", function (e) { on_hotspot_title_chang(); });
+    function on_hotspot_title_chang() {
+        if ($('#hotspot_TitleView').is(':checked')) {
+            hotspot_set_title($('#hotspot_name').val(), $('#hotspot_title').val());
+        }
+        else {
+            hotspot_set_title($('#hotspot_name').val());
+        }
+    }
+
     function call_icon_hotspot_select(result) {
         $('#hotspot_imgUrl').val(result.src);
         $('#hotspot_imgUrl_show').attr("src", result.src);
         kp.hotspot.url($("#hotspot_name").val(), result.src);
-    }
-
-    function on_hotspot_checked_chang(type, check)
-    {
-        kp.hotspot.set($("#hotspot_name").val(), type, $(check).is(':checked'));
     }
 
 </script>

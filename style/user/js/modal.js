@@ -46,8 +46,7 @@ function modal_hide() {
 
 
 function modal_msg(msg, time, url)
-{
-    url = url_time(url);
+{  
     if (time == null) { time = 1000; } else { time = time * 1000; }
     $('#modal_msg').modal({ backdrop: 'static', keyboard: false });
     $('#modal_msg').modal('show');   
@@ -59,6 +58,7 @@ function modal_msg(msg, time, url)
             if (url == "")
             { location.replace(location.href); }
             else {
+                url = url_time(url);
                 location.href = url;
             }
         }
@@ -115,4 +115,8 @@ function tool_icon_select(call_fun) {
 
 function tool_user_image_select(call_fun, project_id) {
     modal_lg("选择贴图", "/User/tool/user_image_select.html?project_id=" + project_id + "&call=" + call_fun)
+}
+
+function tool_snow_select(call_fun) {
+    modal_lg("选择动效", "/User/tool/snow_select.html?call=" + call_fun)
 }
