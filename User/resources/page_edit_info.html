@@ -36,7 +36,7 @@
             <label class="control-label col-sm-3">上传图片：</label>
             <div class="col-sm-6">
                 <label type="button" for="fileupload" class="btn btn-primary">上传图片</label>
-                <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename">
+                <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename" onchange="previewImage(this)">
                 <input class="form-control" type="text" name="info" readonly placeholder="" style="margin: 10px 0;" />
             </div>
             <div class="help-block col-sm-3"></div>
@@ -52,7 +52,7 @@
 
 <script>
     user_submit();
-    var $form = $('.submit_user').parents('form');
+    var $form = $('.submit_user').parents('form'), imgSrc = '';
     $form.find('input[name="id"]').val(modal_url_pra("id"));
     $form.find('input[name="infoType"]').val(modal_url_pra('infoType'));
     $form.find('input[name="orderBy"]').val(modal_url_pra('orderBy'));
@@ -74,11 +74,18 @@
     }
     $form.find('[name="info"]').val(modal_url_pra('info'));
 
+    function previewImage(file) {  //  预览图片
+        var reader = new FileReader();
+        reader.onload = function(evt){
+            imgSrc = evt.target.result;
+        };
+        reader.readAsDataURL(file.files[0]);
+    }
     function fun_page_add(result) {
         if(result.status.toString().toLocaleLowerCase() === 'ok') {
             modal_box_hide();
             modal_msg("编辑完成");
-            result.data.newInfo = $form.find('[name="info"]').val();
+            result.data.newInfo = parseInt(modal_url_pra('infoType')) === 10 ? imgSrc : $form.find('[name="info"]').val();
             setTimeout(function () { var a = eval(modal_url_pra("call")); a(result); }, 10);
         }else {
             modal_msg(result.statusMsg);
