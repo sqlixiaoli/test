@@ -82,7 +82,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <!-- Horizontal Form -->
                         <div class="box box-info">
                             <div class="box-header with-border">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="info-box bg-yellow">
 
                             <span class="info-box-icon"><i class="fa fa-image"></i></span>
@@ -145,53 +145,57 @@
                             <!-- /.info-box-content -->
                         </div>
 
-                        <div class="info-box bg-aqua">
-                            <span class="info-box-icon"><i class="fa fa-image"></i></span>
-                            <div class="info-box-content">
-                                <h4>热点管理</h4>
-                                <span class="product-description">不显示</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-
-
-                        <div class="info-box bg-green">
-                            <span class="info-box-icon"><i class="fa fa-image"></i></span>
-                            <div class="info-box-content">
-                                <h4>项目材料库</h4>
-                                <span class="info-box-number">1<small>P</small></span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
 
                     </div>
+
+                    <div class="col-md-3">
+
+                         <div class="box box-primary" id="op_main">
+            <div class="box-header">
+              <i class="fa fa-edit"></i>
+
+              <h3 class="box-title">项目资源库</h3>
+            </div>
+                              <div class="box-body pad table-responsive">
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">网页管理</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">贴图管理</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">画册管理</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">视频管理</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">3D立体动画</button>
+                                  <button type="button" class="btn btn-block btn-primary btn-lg">产品管理</button>
+                              </div>
+                             
+                             </div>
+
+                    </div>
+
                 </div>
             </section>
         </div>        
     </div>
 
     <script>
-            ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), user: 1 });
-            function fun_list(result) {
+        ajax_user("project_get", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, id: $.getUrlParam("id"), user: 1 });
+        function fun_list(result) {
 
-                var vm = new Vue({
-                    el: "#vue-projetc_view-content",
-                    data: result.data,
-                    methods: {
-                        editProjectName: function (projetcName) {
-                            editBox("项目名称", "input", function (data) { alert(data) }, projetcName);
-                        }
+            var vm = new Vue({
+                el: "#vue-projetc_view-content",
+                data: result.data,
+                methods: {
+                    editProjectName: function (projetcName) {
+                        editBox("项目名称", "input", function (data) { alert(data) }, projetcName);
                     }
-                });
+                }
+            });
 
-                loading_hide();
+            loading_hide();
 
-            }
+        }
 
-            function fun_load(data) {
-                //alert("开始加载");
-                loading();
-            }
+        function fun_load(data) {
+            //alert("开始加载");
+            loading();
+        }
 
         </script>
         <!--#include virtual="/User/menu_button.html" -->
