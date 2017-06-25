@@ -73,7 +73,7 @@
                                         <label class="col-sm-1 control-label" >上传图片</label>
                                         <div class="col-sm-6">
                                         <label type="button" for="fileupload" class="btn btn-primary">上传图片</label>
-                                        <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_img&t=1" name="filename">
+                                        <input class="hide" id="fileupload" type="file" data-url="/API/File/?a=up_scene&t=1" name="filename">
                                         <input id="filepath" name="imgfile" type="text">
                                         </div>
                                         <span class="help-block col-sm-4"></span>

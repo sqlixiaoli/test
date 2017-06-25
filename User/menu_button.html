@@ -21,21 +21,21 @@
 <script>
     user_submit();
 
-    var _a = $(".sidebar-menu a");
-    var _pathname = window.location.pathname.toLowerCase();
+    //var _a = $(".sidebar-menu a");
+    //var _pathname = window.location.pathname.toLowerCase();
     
-    $.each(_a, function (i, obj) {
-        var _href = $(obj).attr("href").toLowerCase();
-        if (_href.indexOf(_pathname) > -1)
-        {
-            var _class = $(obj).parent().parent().parent().attr("class");
-            //console.log(_class);
-            if (_class.indexOf("treeview") > -1) {
-                $(obj).parent().parent().parent().addClass("active");
-            }
-            $(obj).parent().addClass("active");
-        }
-    });  
+    //$.each(_a, function (i, obj) {
+    //    var _href = $(obj).attr("href").toLowerCase();
+    //    if (_href.indexOf(_pathname) > -1)
+    //    {
+    //        var _class = $(obj).parent().parent().parent().attr("class");
+    //        //console.log(_class);
+    //        if (_class.indexOf("treeview") > -1) {
+    //            $(obj).parent().parent().parent().addClass("active");
+    //        }
+    //        $(obj).parent().addClass("active");
+    //    }
+    //});  
 
 </script>
 

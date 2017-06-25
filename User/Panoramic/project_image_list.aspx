@@ -20,7 +20,7 @@
             <section class="content">
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <!-- Horizontal Form -->
                         <div class="box box-info">
                             <div class="box-header with-border">
@@ -29,7 +29,7 @@
                             <!-- /.box-header -->
                             <div class="box-body form-horizontal" id="vue-project-image-list">
 
-                                <div class="col-md-3">
+<%--                                <div class="col-md-3">
                                     <div class="box box-widget widget-user" id="vue-project-info1">
                                         <!-- Add the bg color to the header using any of the bg-* classes -->
                                         <a :href="'project_image_add.aspx?projectid='+project.id">
@@ -38,26 +38,34 @@
                                             </div>
                                         </a>
                                     </div>
-                                </div>
+                                </div>--%>
+                                          
 
-                                <div class="col-md-3" v-for="item in list.data">
-                                    <div class="box box-widget widget-user">
-                                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                                       <a :href="'project_image_view.aspx?id='+item.id">
-                                            <div class="widget-user-header bg-black" style="background: url('') center center; height: 200px; cursor: pointer">
-                                                <h3 class="widget-user-username">{{item.imgTitle}}</h3>
-                                                <h5 class="widget-user-desc">状态</h5>
-                                            </div>
-                                        </a>
+                                <div class="somo_imgbox">
+
+                                    <div class="sceene"  id="vue-project-info1">
+                                        <div class="item">
+                                            <a :href="'project_image_add.aspx?projectid='+project.id"><img src="" /></a>
+                                            <a :href="'project_image_add.aspx?projectid='+project.id"><h3>添加一个新场景</h3></a>             
+                                            <p>点击添加一个新的全景照片</p>
+                                        </div>
                                     </div>
-                                </div>
 
+                                    <div class="sceene" v-for="item in list.data">
+                                        <div class="item">
+                                            <a :href="'project_image_view.aspx?id='+item.id"><img :src="item.imgSlt" /></a>
+                                            <a :href="'project_image_view.aspx?id='+item.id"><h3>{{item.imgTitle}}</h3></a>
+                                            <p>状态</p>
+                                        </div>
+                                    </div>
+                                    <div style="clear:both"></div>    
+                                </div>
 
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="info-box bg-yellow">
 
                             <span class="info-box-icon"><i class="fa fa-image"></i></span>
