@@ -53,14 +53,8 @@
                               </tbody>
                          </table>
                          </div>
-                         <div class="box-footer clearfix" v-if="!loading && Math.ceil(list.total/list.prepage) > 1">
-                             <ul class="pagination pagination-sm no-margin pull-right">
-                                  <li v-on:click="setPage(page - 1)"><a href="javascript:void(0)">«</a></li>
-                                  <li v-for="item in Math.ceil(list.total/list.prepage)" v-on:click="setPage(item)">
-                                       <a href="javascript:void(0)">{{item}}</a>
-                                  </li>
-                                  <li v-on:click="setPage(page + 1)"><a href="javascript:void(0);">»</a></li>
-                             </ul>
+                         <div class="box-footer clearfix">
+                             <my-page :total="list.total" :prepage="list.prepage"></my-page>
                           </div>
                      </div>
                 </div>
@@ -69,6 +63,7 @@
             </section>
         </div>
 
+        <script src="/style/user/js/page.js"></script>
         <script>
             var vm = new Vue({
                el:"#vue-content",
@@ -82,13 +77,13 @@
                },
                mounted: function() {
                    ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
+                   this.$on('getPage', function(page) {
+                       ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: page.page, pageType:1});
+                   })
                },
                methods: {
                    setPage: function(page) {
-                       if(!(page <= 0 || page > Math.ceil(this.list.total/this.list.prepage))) {
-                           this.page = page;
-                           ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
-                       }
+                       ajax_user("pan_page_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: this.page, pageType:1});
                    },
                    del: function(index, item) {
                        this.deleteInfo = item;

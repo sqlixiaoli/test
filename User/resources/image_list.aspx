@@ -33,37 +33,16 @@
                             <div class="box-body">
 
                                 <div class="somo_imgbox">
-                                    <div class="image">
+                                    <div class="image" v-for="(item, index) in list" :key="index">
                                         <div class="item">
-                                            <img src="http://images.china.cn/attachement/jpg/site1000/20170623/f44d307d90c11ab705293c.jpg" />
-                                            <h3>我是标题</h3>
+                                            <img :src="item.imgFile" />
+                                            <h3 class="clearfix">
+                                                {{item.imgTitle}}
+                                                 <span class="fa fa-edit pull-right" @click="edit(item, index)" role="button"></span>
+                                            </h3>
+
                                         </div>
                                     </div>
-                                    <div class="image">
-                                        <div class="item">
-                                            <img src="http://images.china.cn/attachement/jpg/site1000/20170623/f44d307d90c11ab705293c.jpg" />
-                                          <h3>我是标题</h3>
-                                        </div>
-                                    </div>
-                                    <div class="image">
-                                        <div class="item">
-                                            <img src="http://images.china.cn/attachement/jpg/site1000/20170623/f44d307d90c11ab705293c.jpg" />
-                                            <h3>我是标题</h3>
-                                        </div>
-                                    </div>
-                                    <div class="image">
-                                        <div class="item">
-                                            <img src="http://images.china.cn/attachement/jpg/site1000/20170623/f44d307d90c11ab705293c.jpg" />
-                                            <h3>我是标题</h3>
-                                        </div>
-                                    </div>
-                                    <div class="image">
-                                        <div class="item">
-                                            <img src="http://images.china.cn/attachement/jpg/site1000/20170623/f44d307d90c11ab705293c.jpg" />
-                                            <h3>我是标题</h3>
-                                        </div>
-                                    </div>
-                                    <div style="clear: both"></div>
                                 </div>
 
                             </div>
@@ -74,8 +53,38 @@
             </section>
         </div>
 
+        <script src="/style/user/js/page.js"></script>
         <script>
-           
+           var vm = new Vue({
+               el: '#vue-content',
+               data: function() {
+                   return {
+                       list: [],
+                       editIndex:　''
+                   }
+               },
+               mounted: function() {
+                   ajax_user('resources_image_list', {callback: 'fun_get_list', imgType: 1});
+               },
+               methods: {
+                   edit: function(item, index) {
+                       this.editIndex = index;
+                       modal_def('编辑贴图','image_edit.html?call=fun_edit_end&id=' + item.id + '&imgFile=' +item.imgFile+ '&imgTitle=' + item.imgTitle);
+                   }
+               }
+           });
+           function fun_get_list(result) {
+               vm.list = [];
+               if(result.status.toString().toLocaleLowerCase() === 'ok') {
+                   vm.list = result.data.list.data;
+                   vm.total = parseInt(result.data.list.total);
+                   vm.prepage = parseInt(result.data.list.prepage) || 1;
+               }
+           }
+           function fun_edit_end(result) {
+               vm.list.splice(vm.editIndex, 1, result.data.info);
+               vm.editIndex = '';
+           }
         </script>
 
         <!--#include virtual="/User/menu_button.html" -->
