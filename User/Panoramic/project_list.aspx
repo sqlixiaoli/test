@@ -17,13 +17,35 @@
          <div class="content-wrapper">
 
             <section class="content-header">
-                <h1>我的项目<small>0</small></h1>
+                <h1>项目管理<small>共计0个项目</small></h1>                
+                 <ol class="breadcrumb">
+                    <li><i class="fa fa-bars"></i> 我的项目</li>
+                    <li class="active">项目管理</li>
+                  </ol>
             </section>
-            <section class="content" id="vue-content">
-                                
-                <div class="row">                     
+            <section class="content somo_content" id="vue-content">      
+                
+                  <div class="somo_imgbox">
 
-                    <div class="col-md-4" v-for="item in list.data">
+            
+
+                      <div class="project" v-for="item in list.data">
+                                        <div class="item">
+                                            <a :href="'project_view.aspx?id='+item.id">
+                                           <img src="/style/dist/img/photo1.png" />
+                                           <h3>{{item.projectName}}</h3>
+                                                 <p>未上线</p>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                        <div style="clear:both"></div>
+                        </div>
+                
+                                          
+           <%--     <div class="row">                                                          
+                    <div class="col-md-4" >
                         <div class="box box-widget widget-user">
                             <!-- Add the bg color to the header using any of the bg-* classes -->
                             <a :href="'project_view.aspx?id='+item.id">
@@ -73,20 +95,18 @@
                             </div>
                         </div>
                     </div>
-
-
-                </div>
+                </div>--%>
             </section>
         </div>
 
         <script>
-            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status")});
+            ajax_user("project_list", { callback: 'fun_list', btnfun: 'fun_load', showdata: 0, page: 1, status: $.getUrlParam("status") });
             function fun_list(result) {
-              var vm = new Vue({
-                el:"#vue-content",
-                data:result.data
-              });
-              loading_hide();
+                var vm = new Vue({
+                    el: "#vue-content",
+                    data: result.data
+                });
+                loading_hide();
             }
 
             function fun_load(data) {
